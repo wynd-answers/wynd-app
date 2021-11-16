@@ -4,7 +4,6 @@ import { Container, CssBaseline } from "@mui/material";
 import Footer from "./footer";
 import Store from "../context/store";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { StaticQuery } from "gatsby";
 
 const theme = createTheme({
     palette: {

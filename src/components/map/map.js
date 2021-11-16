@@ -1,18 +1,18 @@
 import React, { useContext } from "react";
-import { StaticMap } from 'react-map-gl';
+import { StaticMap, NavigationControl } from '!react-map-gl';
 import DeckGL from '@deck.gl/react';
 import { H3HexagonLayer } from '@deck.gl/geo-layers';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { GlobalContext } from "../context/store";
+import { GlobalContext } from "../../context/store";
 
 const Map = () => {
-    const [state, dispatch] = useContext(GlobalContext);
+    const [, dispatch] = useContext(GlobalContext);
 
     // Viewport settings
     const INITIAL_VIEW_STATE = {
         latitude: 52.520008,
         longitude: 13.404954,
-        zoom: 10,
+        zoom: 12,
         pitch: 0,
         bearing: 0
     };
@@ -32,6 +32,7 @@ const Map = () => {
         wireframe: false,
         filled: true,
         extruded: true,
+        opacity: 0.4,
         elevationScale: 0,
         getHexagon: d => d.hex,
         getFillColor: d => [255, (1 - d.count / 500) * 255, 0],
@@ -41,13 +42,9 @@ const Map = () => {
 
     const handleLayerClick = (info) => {
         dispatch({
-            type: "SET_MESSAGE",
-            payload: {
-                message: `Hexagon added: ${info.object.hex}`,
-                severity: "success",
-            },
+            type: "SET_HEX",
+            payload: info.object
         });
-        console.log(state.message)
     }
 
     const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1Ijoia25hbGxidW1idW0iLCJhIjoiY2t3MHo2MnJ0MDB4ZzJvcGFmN2VkdnZhYiJ9.BMtd8ZtqpDhDpEX1S5tBIg';
@@ -58,10 +55,15 @@ const Map = () => {
                 initialViewState={INITIAL_VIEW_STATE}
                 controller={true}
                 layers={layer}
-                height="400px"
+                height="600px"
                 getTooltip={({ object }) => object && `${object.hex} count: ${object.count}`}
             >
-                <StaticMap mapStyle="mapbox://styles/knallbumbum/ckw14e1h000st15p45o9kuhcy" mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN} />
+                <StaticMap mapStyle="mapbox://styles/knallbumbum/ckw14e1h000st15p45o9kuhcy" mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}>
+                    <div className='mapboxgl-ctrl-bottom-right'>
+                        <NavigationControl
+                            onViewportChange={viewport => this.setState({ viewport })} />
+                    </div>
+                </StaticMap>
             </DeckGL>
         </>
     );

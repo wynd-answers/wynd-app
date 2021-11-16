@@ -7,11 +7,10 @@ const initialState = {
 
 function reducer(state, action) {
   switch (action.type) {
-    case "SET":
+    case "SET_HEX":
       return {
         ...state,
-        selectedNetwork: action.payload,
-        chain: action.chain,
+        chosenHex: action.payload,
       };
     case "SET_MESSAGE":
       return {

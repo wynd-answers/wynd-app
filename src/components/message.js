@@ -27,7 +27,6 @@ const Message = () => {
                                 <CloseIcon fontSize="inherit" />
                             </IconButton>
                         }
-                        sx={{ mb: 2 }}
                     >
                         {state.message.text}
                     </Alert>
