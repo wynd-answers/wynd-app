@@ -27,6 +27,17 @@ Created distributor 5 (m/44'/118'/0'/0/5): juno1amq47ervkj6g7etnjgcaqqayj7qj6cna
 
 You should then send some tokens to the token holder, in this case `juno17ufpwjv8m8ldckj5xef8la6cusltptqcgyne7s`
 
+Update the mnemonic in `./start.sh`
+
 ## Running
 
+```
+./start.sh
+```
+
+We can stop in another terminal with:
+
+```
+./stop.sh
+```
 
