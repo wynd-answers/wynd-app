@@ -1,26 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../components/layout";
 import { Grid } from "@mui/material";
 import Tool from "../components/map/tool";
 import { StaticImage } from "gatsby-plugin-image";
 import Message from "../components/message";
 import ConnectWallet from "../components/connect-wallet";
+import GetStarted from "../components/getStarted";
 
-const IndexPage = () => (
-  <Layout>
-    <Grid spacing={3} container>
-      <Grid item xs={6}>
-        <StaticImage height={200} src="../images/logo.svg" alt="Logo" />
+const IndexPage = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  return (
+    <Layout>
+      <GetStarted
+        open={true}
+        handleClose={() => {
+          setModalOpen(false);
+        }}
+      />
+      <Grid spacing={3} container>
+        <Grid item xs={6}>
+          <StaticImage height={200} src="../images/logo.svg" alt="Logo" />
+        </Grid>
+        <Grid item alignSelf="center" xs={6}>
+          <ConnectWallet />
+        </Grid>
+        <Grid item xs={12}>
+          <Message />
+        </Grid>
       </Grid>
-      <Grid item alignSelf="center" xs={6}>
-        <ConnectWallet />
-      </Grid>
-      <Grid item xs={12}>
-        <Message />
-      </Grid>
-    </Grid>
-    <Tool />
-  </Layout >
-);
+      <Tool />
+    </Layout >
+  );
+}
 
 export default IndexPage;
