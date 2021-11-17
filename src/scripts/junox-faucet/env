@@ -1,0 +1,5 @@
+REPOSITORY="wynd/faucet"
+VERSION="v0.26.3"
+
+CONTAINER_NAME="faucet"
+FAUCET_ADDRESS_PREFIX=juno
