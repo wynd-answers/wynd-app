@@ -15,6 +15,7 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
+    "@cosmjs/stargate": "^0.26.4",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.0.1",
@@ -33,6 +34,12 @@
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
     "react-map-gl": "^6.1.17",
-    "styled-components": "^5.3.3"
-  }
+    "styled-components": "^5.3.3",
+    "stream-browserify": "^3.0.0",
+    "path-browserify": "^1.0.1"
+  },
+  "browserslist": [
+    ">0.25%",
+    "not dead"
+  ]
 }

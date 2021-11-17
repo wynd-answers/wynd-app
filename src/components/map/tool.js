@@ -37,7 +37,7 @@ const Tool = () => {
                 {(showInfo) &&
                     <Grid item sx={{ position: 'absolute', left: 0 }} xs={4}>
                         <Grid container >
-                            <Grid xs={12}>
+                            <Grid item xs={12}>
                                 <Paper variant="outlined" sx={{ p: 2 }}>
                                     <IconButton
                                         aria-label="close"
@@ -78,7 +78,7 @@ const Tool = () => {
                 }
                 <Grid item sx={{ position: 'absolute', right: 0 }} xs={4}>
                     <Grid container >
-                        <Grid sx={{ mb: 2 }} xs={12}>
+                        <Grid sx={{ mb: 2 }} item xs={12}>
                             <Paper variant="outlined" sx={{ p: 2 }}>
                                 <Typography color="secondary" variant="h6">
                                     Demo:
@@ -88,7 +88,7 @@ const Tool = () => {
                                 </Typography>
                             </Paper>
                         </Grid>
-                        <Grid xs={12}>
+                        <Grid item xs={12}>
                             <Paper variant="outlined" sx={{ p: 2 }}>
                                 <Typography color="secondary" variant="h6">
                                     How To

@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid, List, ListItem, Typography, Link, Divider } from "@mui/material";
-import { Twitter, GitHub, YouTube, Air } from '@mui/icons-material';
+import { Twitter, GitHub, YouTube } from '@mui/icons-material';
+import { StaticImage } from "gatsby-plugin-image";
 
 const Footer = () => {
     return (
@@ -9,9 +10,7 @@ const Footer = () => {
                 <Divider flexItem />
             </Grid>
             <Grid item xs={4} alignSelf="center">
-                <Typography variant="h3">
-                    <Air fontSize="inherit" /> Wynd
-                </Typography>
+                <StaticImage height={200} src="../images/logo.svg" alt="Logo" />
             </Grid>
             <Grid item xs={2} />
             <Grid item xs={2}>

@@ -1,8 +1,14 @@
-import React, { useReducer, createContext } from "react";
+import React, { useReducer, createContext, useEffect } from "react";
+import { connectKeplr } from "../utils/keplr";
+import { chain } from "./chain";
 
 const initialState = {
   chosenHex: [],
-  message: null
+  message: null,
+  signer: null,
+  address: null,
+  signingClient: null,
+  balance: 0
 };
 
 function reducer(state, action) {
@@ -20,6 +26,22 @@ function reducer(state, action) {
           text: action.payload.message,
         },
       };
+    case "SET_WALLET":
+      return {
+        ...state,
+        signer: action.payload.signer,
+        address: action.payload.address,
+      };
+    case "SET_COSMJS":
+      return {
+        ...state,
+        signingClient: action.payload.cosmJS,
+      };
+    case "SET_BALANCE":
+      return {
+        ...state,
+        balance: action.payload.balance,
+      };
     default:
       return state;
   }
@@ -27,6 +49,26 @@ function reducer(state, action) {
 
 const Store = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+
+  useEffect(() => {
+
+    if (state.wallet) {
+      setTimeout(() => connectKeplr(chain, dispatch), 500);
+    }
+    
+    // Reload wallet every time user change account
+    window.addEventListener("keplr_keystorechange", () => {
+      console.log(
+        "Key store in Keplr is changed. You may need to refetch the account info."
+      );
+      connectKeplr(chain, dispatch);
+    });
+
+    return () => {
+      window.removeEventListener("keplr_keystorechange", () => { });
+    };
+  }, []);
 
   return (
     <GlobalContext.Provider value={[state, dispatch]}>
