@@ -1,8 +1,8 @@
 export const chain = {
     "name": "Juno Uni",
     "chain_id": "uni",
-    "lcd": "http://uni.junochain.com:1317",
-    "rpc": "http://uni.junochain.com:26657",
+    "lcd": " https://api.uni.junomint.com:443/",
+    "rpc": "https://rpc.uni.junomint.com:443/",
     "coinDenom": "JUNOX",
     "coinMinimalDenom": "ujunox",
     "prefix": "juno",
