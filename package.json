@@ -42,5 +42,9 @@
   "browserslist": [
     ">0.25%",
     "not dead"
-  ]
+  ],
+  "devDependencies": {
+    "@cosmjs/cosmwasm-stargate": "^0.26.4",
+    "@cosmjs/proto-signing": "^0.26.4"
+  }
 }
