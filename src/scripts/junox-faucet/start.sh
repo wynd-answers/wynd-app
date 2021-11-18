@@ -7,19 +7,18 @@ SCRIPT_DIR="$(realpath "$(dirname "$0")")"
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR"/env
 
-export FAUCET_CONCURRENCY=1
+export FAUCET_CONCURRENCY=3
 # TODO: update this
 export FAUCET_MNEMONIC="wagon romance envelope exile movie pencil happy one keep large glove floor"
 export FAUCET_TOKENS=ujunox
 export FAUCET_GAS_PRICE="0.025${FAUCET_TOKENS}"
-export FAUCET_CREDIT_AMOUNT_UJUNOX=200000
+export FAUCET_CREDIT_AMOUNT_UJUNOX=250000
 export FAUCET_ADDRESS_PREFIX=juno
 
-# remove these when we have enough
-export FAUCET_REFILL_FACTOR=2
-export FAUCET_REFILL_THRESHOLD=2
-
-# docker pull "$REPOSITORY:$VERSION"
+# refill with enough for 20 requests
+export FAUCET_REFILL_FACTOR=20
+# if the faucet ever has less than enough for 10 requests
+export FAUCET_REFILL_THRESHOLD=10
 
 docker run --read-only --rm \
   -e FAUCET_MNEMONIC \
