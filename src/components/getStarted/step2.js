@@ -25,8 +25,11 @@ const StepTwo = ({ changeStep }) => {
         changeStep(2);
     }
 
-    const continueHandler = () => {
-        requestWynd(state.signingClient, state.address).then(res => console.log(res))
+    const continueHandler = async () => {
+        setLoading(true);
+        requestWynd(state.signingClient, state.address)
+            .then(() => setLoading(false))
+            .catch(() => setLoading(false));
     }
 
     return (
