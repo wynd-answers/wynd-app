@@ -37,14 +37,12 @@
     "react-helmet": "^6.1.0",
     "react-map-gl": "^6.1.17",
     "stream-browserify": "^3.0.0",
-    "styled-components": "^5.3.3"
+    "styled-components": "^5.3.3",
+    "@cosmjs/cosmwasm-stargate": "^0.26.4",
+    "@cosmjs/proto-signing": "^0.26.4"
   },
   "browserslist": [
     ">0.25%",
     "not dead"
-  ],
-  "devDependencies": {
-    "@cosmjs/cosmwasm-stargate": "^0.26.4",
-    "@cosmjs/proto-signing": "^0.26.4"
-  }
+  ]
 }

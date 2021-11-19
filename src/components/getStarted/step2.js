@@ -13,7 +13,7 @@ const StepTwo = ({ changeStep }) => {
 
         dispatch({
             type: "SET_BALANCE",
-            payload: { balance: bal.balance / 6 },
+            payload: { balance: bal.balance / 100000 },
         });
 
         setLoading(false);
