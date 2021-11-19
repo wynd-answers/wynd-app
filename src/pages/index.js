@@ -8,16 +8,9 @@ import ConnectWallet from "../components/connect-wallet";
 import GetStarted from "../components/getStarted";
 
 const IndexPage = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <Layout>
-      <GetStarted
-        open={true}
-        handleClose={() => {
-          setModalOpen(false);
-        }}
-      />
+      <GetStarted />
       <Grid spacing={3} container>
         <Grid item xs={6}>
           <StaticImage height={200} src="../images/logo.svg" alt="Logo" />

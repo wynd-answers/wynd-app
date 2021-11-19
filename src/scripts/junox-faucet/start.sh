@@ -9,7 +9,7 @@ source "$SCRIPT_DIR"/env
 
 export FAUCET_CONCURRENCY=1
 # TODO: update this
-export FAUCET_MNEMONIC="wagon romance envelope exile movie pencil happy one keep large glove floor"
+export FAUCET_MNEMONIC="vintage laundry gift pilot debris suggest sick zoo brain alone mistake spoon"
 export FAUCET_TOKENS=ujunox
 export FAUCET_GAS_PRICE="0.025${FAUCET_TOKENS}"
 export FAUCET_CREDIT_AMOUNT_UJUNOX=200000

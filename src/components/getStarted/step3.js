@@ -1,21 +1,30 @@
-import { Alert, Typography, TextField, Grid, Box, Modal, Button } from "@mui/material";
-import React, { useState, useContext } from "react";
+import { Typography, Grid, Button } from "@mui/material";
+import React from "react";
 
 const StepThree = ({ changeStep }) => {
 
     const continueHandler = () => {
         if (typeof changeStep === 'function') {
-            changeStep(1);
+            changeStep();
         }
     }
 
     return (
-        <>
-            <Typography variant="body">
-                Hi, seems that you're using WYND for the first time! Follow some simple steps to get started!
-            </Typography>
-            <Button variant="contained" onClick={continueHandler}>Let's go!</Button>
-        </>
+        <Grid container spacing={3}>
+            <Grid item xs={12}>
+                <Typography variant="h6">
+                    Let's go!
+                </Typography>
+            </Grid>
+            <Grid item xs={12}>
+                <Typography variant="body">
+                    You should have some WYND Balance on your wallet now. Happy testing!
+                </Typography>
+            </Grid>
+            <Grid item xs={12}>
+                <Button variant="contained" onClick={continueHandler}>Close</Button>
+            </Grid>
+        </Grid>
     );
 };
 

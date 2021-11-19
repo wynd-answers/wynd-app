@@ -1,4 +1,5 @@
-import { SigningStargateClient } from "@cosmjs/stargate";
+import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+import { getWyndBalance } from "./faucet";
 
 export const checkExtensionAndBrowser = () => {
   if (typeof window !== `undefined`) {
@@ -64,7 +65,6 @@ export const suggestChain = async (chain) => {
 };
 
 export const connectKeplr = async (chain, dispatch) => {
-
   // check browser compatibility
   if (!checkExtensionAndBrowser()) {
     return false;
@@ -75,10 +75,10 @@ export const connectKeplr = async (chain, dispatch) => {
   let error = false;
   await suggestChain(chain);
   await window.keplr.enable(chain.chain_id).catch((e) => {
-      console.log(e);
-      error = true;
+    console.log(e);
+    error = true;
   });
-  
+
   if (error) {
     return false;
   }
@@ -93,7 +93,7 @@ export const connectKeplr = async (chain, dispatch) => {
   });
 
   // Init cosmjs client
-  const cosmJS = await SigningStargateClient.connectWithSigner(
+  const cosmJS = await SigningCosmWasmClient.connectWithSigner(
     chain.rpc,
     offlineSigner,
     accounts[0].address
@@ -102,16 +102,6 @@ export const connectKeplr = async (chain, dispatch) => {
   dispatch({
     type: "SET_COSMJS",
     payload: { cosmJS },
-  });
-
-  const balance = await cosmJS.getBalance(
-    accounts[0].address,
-    chain.coinMinimalDenom
-  );
-
-  dispatch({
-    type: "SET_BALANCE",
-    payload: { balance: balance.amount },
   });
 
   return [offlineSigner, accounts];
