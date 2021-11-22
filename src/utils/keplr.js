@@ -104,5 +104,15 @@ export const connectKeplr = async (chain, dispatch) => {
     payload: { cosmJS },
   });
 
+  const balance = await cosmJS.getBalance(
+    accounts[0].address,
+    chain.coinMinimalDenom
+  );
+
+  dispatch({
+    type: "SET_BALANCE_JUNO",
+    payload: { balance: balance.amount },
+  });
+  
   return [offlineSigner, accounts];
 };

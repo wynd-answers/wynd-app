@@ -1,5 +1,6 @@
 import { calculateFee, GasPrice } from "@cosmjs/stargate";
 import { CosmWasmClient } from '@cosmjs/cosmwasm-stargate';
+import { FaucetClient } from "@cosmjs/faucet-client";
 
 export const getWyndBalance = async (address, rpcUrl) => {
   const client = await CosmWasmClient.connect(rpcUrl);
@@ -17,4 +18,9 @@ export const requestWynd = async (client, address) => {
     { "request_funds": {} },
     calculateFee(200_000, GasPrice.fromString("0.025ujunox")),
   );
+}
+
+export const requestJuno = async (address, token) => {
+  const client = new FaucetClient("http://faucet.wynd.world:8000/");
+  return await client.credit(address, token);
 }

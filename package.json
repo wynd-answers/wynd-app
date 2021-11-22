@@ -15,7 +15,9 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
+    "@cosmjs/cosmwasm-stargate": "^0.26.4",
     "@cosmjs/faucet-client": "^0.26.4",
+    "@cosmjs/proto-signing": "^0.26.4",
     "@cosmjs/stargate": "^0.26.4",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
@@ -37,9 +39,7 @@
     "react-helmet": "^6.1.0",
     "react-map-gl": "^6.1.17",
     "stream-browserify": "^3.0.0",
-    "styled-components": "^5.3.3",
-    "@cosmjs/cosmwasm-stargate": "^0.26.4",
-    "@cosmjs/proto-signing": "^0.26.4"
+    "styled-components": "^5.3.3"
   },
   "browserslist": [
     ">0.25%",
