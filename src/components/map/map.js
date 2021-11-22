@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { StaticMap, NavigationControl } from '!react-map-gl';
-import DeckGL from '@deck.gl/react';
-import { H3HexagonLayer } from '@deck.gl/geo-layers';
+import DeckGL from '!@deck.gl/react';
+import { H3HexagonLayer } from '!@deck.gl/geo-layers';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { GlobalContext } from "../../context/store";
 
@@ -51,20 +51,22 @@ const Map = () => {
 
     return (
         <>
-            <DeckGL
-                initialViewState={INITIAL_VIEW_STATE}
-                controller={true}
-                layers={layer}
-                height="600px"
-                getTooltip={({ object }) => object && `${object.hex} count: ${object.count}`}
-            >
-                <StaticMap mapStyle="mapbox://styles/knallbumbum/ckw14e1h000st15p45o9kuhcy" mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}>
-                    <div className='mapboxgl-ctrl-bottom-right'>
-                        <NavigationControl
-                            onViewportChange={viewport => this.setState({ viewport })} />
-                    </div>
-                </StaticMap>
-            </DeckGL>
+            {typeof window !== `undefined` &&
+                <DeckGL
+                    initialViewState={INITIAL_VIEW_STATE}
+                    controller={true}
+                    layers={layer}
+                    height="600px"
+                    getTooltip={({ object }) => object && `${object.hex} count: ${object.count}`}
+                >
+                    <StaticMap mapStyle="mapbox://styles/knallbumbum/ckw14e1h000st15p45o9kuhcy" mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}>
+                        <div className='mapboxgl-ctrl-bottom-right'>
+                            <NavigationControl
+                                onViewportChange={viewport => this.setState({ viewport })} />
+                        </div>
+                    </StaticMap>
+                </DeckGL>
+            }
         </>
     );
 };

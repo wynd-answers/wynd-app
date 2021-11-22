@@ -8,7 +8,8 @@ const initialState = {
   signer: null,
   address: null,
   signingClient: null,
-  balance: 0
+  balance: 0,
+  junoBalance : 0
 };
 
 function reducer(state, action) {
@@ -42,6 +43,11 @@ function reducer(state, action) {
         ...state,
         balance: action.payload.balance,
       };
+    case "SET_BALANCE_JUNO":
+      return {
+        ...state,
+        junoBalance: action.payload.balance,
+      };
     default:
       return state;
   }
@@ -56,7 +62,7 @@ const Store = ({ children }) => {
     if (state.wallet) {
       setTimeout(() => connectKeplr(chain, dispatch), 500);
     }
-    
+
     // Reload wallet every time user change account
     window.addEventListener("keplr_keystorechange", () => {
       console.log(
