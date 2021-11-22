@@ -34,7 +34,6 @@ function reducer(state, action) {
         address: action.payload.address,
       };
     case "SET_COSMJS":
-      console.log(action.payload)
       return {
         ...state,
         signingClient: action.payload.cosmJS,
