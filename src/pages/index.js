@@ -11,9 +11,9 @@ const IndexPage = () => {
   return (
     <Layout>
       <GetStarted />
-      <Grid spacing={3} container>
+      <Grid spacing={3} sx={{ mt: 3 }} container>
         <Grid item xs={6}>
-          <StaticImage height={200} src="../images/logo.svg" alt="Logo" />
+          <StaticImage height={50} src="../images/logo.svg" alt="Logo" />
         </Grid>
         <Grid item alignSelf="center" xs={6}>
           <ConnectWallet />
