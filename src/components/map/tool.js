@@ -1,12 +1,15 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { GlobalContext } from "../../context/store";
-import { Grid, Paper, Typography, IconButton, InputLabel, OutlinedInput, InputAdornment, FormControl } from "@mui/material";
+import { Grid, Paper, Typography, IconButton, InputLabel, OutlinedInput, InputAdornment, FormControl, Slide } from "@mui/material";
 import { Close, Send } from "@mui/icons-material";
+import { Line } from 'react-chartjs-2';
 import Map from "./map";
+import Chart from "./chart";
 
 const Tool = () => {
     const [state, dispatch] = useContext(GlobalContext);
     const [showInfo, setShowInfo] = useState(false);
+    const containerRef = useRef(null);
 
     useEffect(() => {
         if (state.chosenHex.hex) {
@@ -28,17 +31,17 @@ const Tool = () => {
 
     return (
         <>
-            <Grid container sx={{ position: 'relative' }}>
+            <Grid ref={containerRef} container sx={{ position: 'relative', overflow: 'hidden' }}>
                 <Grid item sx={{ position: 'relative' }} xs={12}>
                     <Paper variant="outlined" sx={{ height: '600px', position: 'relative' }}>
                         <Map />
                     </Paper>
                 </Grid>
-                {(showInfo) &&
-                    <Grid item sx={{ position: 'absolute', left: 0 }} xs={4}>
-                        <Grid container >
-                            <Grid item xs={12}>
-                                <Paper variant="outlined" sx={{ p: 2 }}>
+                <Slide container={containerRef.current} direction="right" in={showInfo} mountOnEnter unmountOnExit>
+                    <Grid item sx={{ position: 'absolute', left: 0, height: '100%' }} xs={4}>
+                        <Grid sx={{ height: '100%' }} container >
+                            <Paper variant="outlined" sx={{ p: 2, height: '100%' }}>
+                                <Grid item xs={12}>
                                     <IconButton
                                         aria-label="close"
                                         color="inherit"
@@ -50,11 +53,18 @@ const Tool = () => {
                                     >
                                         <Close fontSize="inherit" />
                                     </IconButton>
-                                    <Typography color="secondary" variant="h6">
+                                    <Typography sx={{ mb: 2 }} color="white" variant="h6">
                                         Hexagon {state.chosenHex.hex}
                                     </Typography>
+                                    <Paper sx={{ mb: 2 }}>
+                                        <Chart hex={state.chosenHex.hex} />
+                                    </Paper>
+                                    <Typography variant="body">
+                                        <strong>Currently Invested: </strong> 0 <br />
+                                        <strong>Invested Amount:</strong> 1.000 WYND
+                                    </Typography>
                                     <FormControl sx={{ mt: 2 }}>
-                                        <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
+                                        <InputLabel htmlFor="outlined-adornment-amount">Invest some WYND!</InputLabel>
                                         <OutlinedInput
                                             id="outlined-adornment-amount"
                                             type="text"
@@ -71,35 +81,11 @@ const Tool = () => {
                                             label="Amount"
                                         />
                                     </FormControl>
-                                </Paper>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                }
-                <Grid item sx={{ position: 'absolute', right: 0 }} xs={4}>
-                    <Grid container >
-                        <Grid sx={{ mb: 2 }} item xs={12}>
-                            <Paper variant="outlined" sx={{ p: 2 }}>
-                                <Typography color="secondary" variant="h6">
-                                    Demo:
-                                </Typography>
-                                <Typography variant="body1">
-                                    Click on a hexagon in the map for some action!
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Paper variant="outlined" sx={{ p: 2 }}>
-                                <Typography color="secondary" variant="h6">
-                                    How To
-                                </Typography>
-                                <Typography variant="body1">
-                                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                                </Typography>
+                                </Grid>
                             </Paper>
                         </Grid>
                     </Grid>
-                </Grid>
+                </Slide>
             </Grid>
         </>
     );

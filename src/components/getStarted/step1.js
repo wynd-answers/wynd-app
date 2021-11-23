@@ -64,7 +64,7 @@ const StepOne = ({ changeStep }) => {
                 <>
                     <Grid item xs={12}>
                         <Typography variant="h6">
-                            First time?
+                            First time? {process.env.GATSBY_TEST}
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
