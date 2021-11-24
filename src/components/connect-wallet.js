@@ -3,6 +3,10 @@ import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import { GlobalContext } from "../context/store";
 
+/**
+ * This shows the current connected wallet account address and
+ * its WYND Balance
+ */
 const ConnectWallet = () => {
     const [state] = useContext(GlobalContext);
 

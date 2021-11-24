@@ -6,6 +6,10 @@ import { h3ToGeo } from "h3-js";
 import Map from "./map";
 import Chart from "./chart";
 
+
+/**
+ * Tool contains everything needed for the main-application, e.g. Map
+ */
 const Tool = () => {
     const [state, dispatch] = useContext(GlobalContext);
     const [showInfo, setShowInfo] = useState(false);

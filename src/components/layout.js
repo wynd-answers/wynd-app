@@ -6,6 +6,9 @@ import Footer from "./footer";
 import Store from "../context/store";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+/**
+ * Theming Colors
+ */
 const theme = createTheme({
     palette: {
         mode: 'dark',
@@ -23,6 +26,9 @@ const theme = createTheme({
 });
 
 
+/**
+ * Actual Layout
+ */
 const Layout = ({ children }) => {
 
     // Resolution needs to be desktop size

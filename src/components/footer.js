@@ -3,6 +3,9 @@ import { Grid, List, ListItem, Typography, Link, Divider, Container } from "@mui
 import { Twitter, GitHub, YouTube } from '@mui/icons-material';
 import { StaticImage } from "gatsby-plugin-image";
 
+/**
+ * Simple Footer
+ */
 const Footer = () => {
     return (
         <Container>
