@@ -9,7 +9,7 @@ import { GlobalContext } from "../../context/store";
  */
 const StepOne = ({ changeStep }) => {
     const [state, dispatch] = useContext(GlobalContext);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [keplrInstalled, setKeplrInstalled] = useState(true);
 
     // Fires when continue-button has been clicked
@@ -22,6 +22,9 @@ const StepOne = ({ changeStep }) => {
 
             // Wait for kelpr browser extension
             await connectKeplr(chain, dispatch).then(() => {
+
+                // Remember, that Wallet is connected
+                localStorage.setItem('keplrConnected', '1');
 
                 // If WYND Balance is 0...
                 if (state.address && state.balance === 0) {
@@ -50,12 +53,16 @@ const StepOne = ({ changeStep }) => {
         if (!checkExtensionAndBrowser()) {
             setKeplrInstalled(false);
         }
+        if (localStorage.getItem('keplrConnected')) {
+            connectKeplr(chain, dispatch);
+        }
         if (state.address && state.balance === 0) {
             changeStep(1);
         }
         if (state.balance > 0) {
             changeStep(2);
         }
+        setLoading(false);
     }, [state.address, state.balance]);
 
 
