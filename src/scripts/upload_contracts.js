@@ -19,15 +19,15 @@ const config = {
 };
 
 const contracts = [
-  // {
-  //   name: 'cw20-base',
-  //   wasmUrl:
-  //     'https://github.com/CosmWasm/cosmwasm-plus/releases/download/v0.10.2/cw20_base.wasm',
-  // },
-  // {
-  //   name: 'wynd-faucet',
-  //   wasmFile: './contracts/wynd_faucet.wasm',
-  // },
+  {
+    name: 'cw20-base',
+    wasmUrl:
+      'https://github.com/CosmWasm/cosmwasm-plus/releases/download/v0.10.2/cw20_base.wasm',
+  },
+  {
+    name: 'wynd-faucet',
+    wasmFile: './contracts/wynd_faucet.wasm',
+  },
   {
     name: 'wynd-invest',
     wasmFile: './contracts/wynd_invest.wasm',
