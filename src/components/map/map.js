@@ -6,6 +6,10 @@ import { GlobalContext } from "../../context/store";
 import axios from "axios";
 import 'mapbox-gl/dist/mapbox-gl.css';
 
+
+/**
+ * Map
+ */
 const Map = forwardRef((props, ref) => {
     const [state, dispatch] = useContext(GlobalContext);
     const [layer, setLayer] = useState(false);
@@ -44,9 +48,14 @@ const Map = forwardRef((props, ref) => {
     }));
 
     useEffect(() => {
+
+        // Get all hexagons and their latest value from API
         axios.get(process.env.GATSBY_DATAPLATFORM_URL_ALL)
             .then(res => {
                 const data = [];
+
+                // We need to check the highest and the lowest here, to
+                // calculate the color codes later.
                 let lowest = 10000;
                 let highest = 0;
                 Object.keys(res.data).map((key) => {
@@ -65,6 +74,7 @@ const Map = forwardRef((props, ref) => {
                     data.push(arr);
                 });
 
+                // The actual hexagons
                 const lay = new H3HexagonLayer({
                     id: 'h3-hexagon-layer',
                     data,

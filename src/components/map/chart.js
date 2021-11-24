@@ -3,11 +3,15 @@ import { Line } from 'react-chartjs-2';
 import axios from "axios";
 import { GlobalContext } from '../../context/store';
 
+/**
+ * Chart in the detail-overlay for a single hex
+ */
 const Chart = ({ hex }) => {
-    const [state, dispatch] = useContext(GlobalContext);
+    const [state] = useContext(GlobalContext);
     const [labels, setLabels] = useState([]);
     const [values, setValues] = useState([]);
 
+    // ChartJS Options
     const options = {
         responsive: true,
         scales: {
@@ -40,6 +44,7 @@ const Chart = ({ hex }) => {
         },
     };
 
+    // Chart JS Data
     const data = {
         labels,
         datasets: [
@@ -55,6 +60,7 @@ const Chart = ({ hex }) => {
         const l = [];
         const v = [];
 
+        // Get history of a single hex from API and convert to a readable date-string.
         axios.get(process.env.GATSBY_DATAPLATFORM_URL + hex)
             .then(res => {
                 Object.keys(res.data.data["HCHO"]).map(el => {

@@ -1,36 +1,51 @@
-import { CircularProgress, Typography, Grid, Alert, Button, Link } from "@mui/material";
 import React, { useState, useContext, useEffect } from "react";
+import { CircularProgress, Typography, Grid, Alert, Button, Link } from "@mui/material";
 import { connectKeplr, checkExtensionAndBrowser } from "../../utils/keplr";
 import { chain } from "../../context/chain";
 import { GlobalContext } from "../../context/store";
 
-
+/**
+ * Step 1 of getStarted-Modal
+ */
 const StepOne = ({ changeStep }) => {
     const [state, dispatch] = useContext(GlobalContext);
     const [loading, setLoading] = useState(false);
     const [keplrInstalled, setKeplrInstalled] = useState(true);
 
-
-
+    // Fires when continue-button has been clicked
     const continueHandler = async () => {
+
+        // Show loading indicator
         setLoading(true);
+
         if (typeof changeStep === 'function') {
+
+            // Wait for kelpr browser extension
             await connectKeplr(chain, dispatch).then(() => {
+
+                // If WYND Balance is 0...
                 if (state.address && state.balance === 0) {
+
+                    // ..continue with step 2 to get some
                     changeStep(1);
+
+                // IF Wynd is on the wallet
                 } else if (state.address && state.balance > 0) {
+
+                    // Skip to the last step
                     changeStep(2);
                 }
             }).catch((e) => {
                 console.log(e);
             })
 
-        } else {
-
         }
+
+        // Done, hide loading indicator
         setLoading(false);
     }
 
+    // Check Browser & Extension and send users to steps
     useEffect(() => {
         if (!checkExtensionAndBrowser()) {
             setKeplrInstalled(false);

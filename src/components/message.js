@@ -3,6 +3,9 @@ import { GlobalContext } from "../context/store";
 import CloseIcon from '@mui/icons-material/Close';
 import { Alert, Collapse, IconButton } from "@mui/material";
 
+/**
+ * This component is used to show errors and warnings
+ */
 const Message = () => {
     const [state] = useContext(GlobalContext);
     const [open, setOpen] = useState(true);
