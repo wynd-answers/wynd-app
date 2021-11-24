@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, forwardRef, useImperativeHandle } from "react";
-import { StaticMap, NavigationControl, FlyToInterpolator } from '!react-map-gl';
+import { StaticMap, FlyToInterpolator } from '!react-map-gl';
 import DeckGL from '!@deck.gl/react';
 import { H3HexagonLayer } from '!@deck.gl/geo-layers';
 import { GlobalContext } from "../../context/store";
@@ -69,11 +69,12 @@ const Map = forwardRef((props, ref) => {
                     id: 'h3-hexagon-layer',
                     data,
                     pickable: true,
-                    wireframe: false,
+                    wireframe: true,
                     filled: true,
-                    extruded: true,
                     opacity: 0.6,
                     elevationScale: 0,
+                    getLineColor: d => [255,255,255],
+                    getLineWidth: d => 1,
                     getHexagon: d => d.hex,
                     getFillColor: d => d.hex === state.chosenHex ? [255, 255, 255] : [255, (1 - (d.count - lowest) / (highest - lowest)) * 255, 0],
                     getElevation: d => d.count,
