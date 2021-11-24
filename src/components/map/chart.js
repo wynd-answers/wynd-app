@@ -69,7 +69,6 @@ const Chart = ({ hex }) => {
 
     return (
         <Line
-            datasetIdKey='id'
             data={{
                 labels: labels,
                 datasets: [

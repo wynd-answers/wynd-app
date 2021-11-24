@@ -27,10 +27,8 @@ const Layout = ({ children }) => {
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <GlobalStyles styles={{ body: { paddingTop: 50 } }} />
-                <Container>
-                    {children}
-                    <Footer />
-                </Container>
+                {children}
+                <Footer />
             </ThemeProvider>
         </Store>
     );
