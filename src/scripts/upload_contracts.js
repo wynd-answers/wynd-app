@@ -107,4 +107,4 @@ main().then(
 
 // NOTE: cw20-base 75
 // NOTE: wynd-faucet 76
-// NOTE: wynd-invest 183
+// NOTE: wynd-invest was 183, update 193
