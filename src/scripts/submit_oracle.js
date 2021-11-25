@@ -38,7 +38,6 @@ async function loadOracleData(since) {
 
 function logToEvents(logs) {
     let events = logs[0].events.map(eventObject);
-    console.log(events);
     return events.reduce((obj, evt) => Object.assign(obj, evt), {});
 }
 

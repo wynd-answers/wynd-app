@@ -23,7 +23,6 @@ const wyndAddress = "juno1wjur4gvzn0ccnffyuhvs3qxgsxn6ga86wpd2y8s2ufck4c2zmrfsyn
 
 function logToEvents(logs) {
     let events = logs[0].events.map(eventObject);
-    console.log(events);
     return events.reduce((obj, evt) => Object.assign(obj, evt), {});
 }
 
@@ -66,6 +65,10 @@ async function main() {
 
     let { balance } = await client.queryContractSmart(wyndAddress, {balance: {address}});
     console.info(`Balance: ${balance} uWYND`);
+
+    let { investments } = await client.queryContractSmart(investAddr, {list_investments: {investor: address}});
+    console.info(`All investments:`);
+    investments.forEach(x => console.log(x));
 
     const fee = {
       gas: "400000",
