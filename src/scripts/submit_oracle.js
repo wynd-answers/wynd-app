@@ -33,6 +33,18 @@ async function loadOracleData(since) {
 
     console.log(`After filter: ${measures.length}`);
     console.log(measures[17]);
+    return measures;
+}
+
+function logToEvents(logs) {
+    let events = logs[0].events.map(eventObject);
+    console.log(events);
+    return events.reduce((obj, evt) => Object.assign(obj, evt), {});
+}
+
+function eventObject(event) {
+    let attributes = event.attributes.reduce((obj, attr) => Object.assign(obj, { [attr.key]: attr.value }), {});
+    return { [event.type]: attributes };
 }
 
 async function main() {
@@ -51,32 +63,30 @@ async function main() {
       wallet,
       options
     );
-
-    // 7 days ago
-    const since = Math.floor(Date.now() / 1000) - 7 * 86400;
-    await loadOracleData(since);
-
     // let balance = await client.getBalance(address, "ujunox");
     // console.info(`Balance: ${balance.amount} ${balance.denom}`);
   
+    // Data in the last 7 days
+    const since = Math.floor(Date.now() / 1000) - 7 * 86400;
+    const values = await loadOracleData(since);
+    const msg = { store_oracle: { values }};
+
     const fee = {
-      // those are 800 indexes to add!
-      gas: "6400000",
+      // those are many indexes to add!
+      gas: "3200000",
       amount: [{
         denom: config.feeDenom,
         // 0.025 * gas
-        amount: "160000",
+        amount: "80000",
       }]
     };
     
-    // console.log(`Instantiating Code ${codeId} with:`);
-    // console.log(initMsg);
-  
-    // const receipt = await client.instantiate(address, codeId, initMsg, "WYND Invest", fee, {admin: address});
-  
-    // console.debug(`Instantiate succeeded. Receipt: ${JSON.stringify(receipt)}`);
-    // console.debug("");
-    // console.log(`Contract Address: ${receipt.contractAddress}`);
+    console.log("Executing...");
+    const { logs } = await client.execute(address, investAddr, msg, fee, "New oracle data");
+
+    console.debug(`Execute succeeded. Receipt: `);
+    const events = logToEvents(logs);
+    console.log(events);
   }
   
   main().then(
