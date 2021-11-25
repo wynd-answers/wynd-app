@@ -4,6 +4,9 @@ import { requestWynd, requestJuno, getWyndBalance } from "../../utils/faucet";
 import { GlobalContext } from "../../context/store";
 import { chain } from "../../context/chain";
 
+/**
+ * Step 2 of getStarted-Modal
+ */
 const StepTwo = ({ changeStep }) => {
     const [state, dispatch] = useContext(GlobalContext);
     const [loading, setLoading] = useState(true);

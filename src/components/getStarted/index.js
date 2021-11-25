@@ -15,6 +15,10 @@ const style = {
     p: 4,
 };
 
+/**
+ * Get started component
+ * Helps new users to get some WYND Tokens / JUNO Tokens to be able to test the application.
+ */
 const GetStarted = () => {
     const [step, setStep] = useState(0);
     const [open, setOpen] = useState(true);
@@ -30,8 +34,8 @@ const GetStarted = () => {
     return (
         <Modal
             open={open}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
+            aria-labelledby="Get Started"
+            aria-describedby="Helps new users to get some WYND Tokens / JUNO Tokens to be able to test the application."
         >
             <Box sx={style}>
                 {

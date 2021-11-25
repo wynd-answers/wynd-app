@@ -3,7 +3,7 @@ import { connectKeplr } from "../utils/keplr";
 import { chain } from "./chain";
 
 const initialState = {
-  chosenHex: [],
+  chosenHex: false,
   message: null,
   signer: null,
   address: null,

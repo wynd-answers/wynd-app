@@ -1,3 +1,6 @@
+/**
+ * Chain Information
+ */
 export const chain = {
     "name": "Juno Uni",
     "chain_id": "uni",

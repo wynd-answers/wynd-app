@@ -1,6 +1,9 @@
-import { Typography, Grid, Button } from "@mui/material";
 import React from "react";
+import { Typography, Grid, Button } from "@mui/material";
 
+/**
+ * Step 3  of getStarted-Modal, user has WYND now and is ready to get started.
+ */
 const StepThree = ({ changeStep }) => {
 
     const continueHandler = () => {
