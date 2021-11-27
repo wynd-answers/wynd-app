@@ -1,5 +1,5 @@
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-import { getWyndBalance } from "./faucet";
+import { getWyndBalance } from "./client";
 
 export const checkExtensionAndBrowser = () => {
   if (typeof window !== `undefined`) {
