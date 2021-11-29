@@ -7,7 +7,7 @@ import { GlobalContext } from '../../context/store';
  * Chart in the detail-overlay for a single hex
  */
 const Chart = ({ hex }) => {
-    const [state] = useContext(GlobalContext);
+    const [state, dispatch] = useContext(GlobalContext);
     const [labels, setLabels] = useState([]);
     const [values, setValues] = useState([]);
 
@@ -68,6 +68,23 @@ const Chart = ({ hex }) => {
                     l.push(date.toLocaleDateString('en-US'));
                     v.push(res.data.data["HCHO"][el]);
                 });
+                if (
+                    (new Date(
+                        Object.keys(res.data.data["HCHO"]).pop()
+                    ).getTime()) <= (new Date()).getTime() - (parseInt(process.env.GATSBY_DATA_MAX_AGE) * 24 * 60 * 60 * 1000)
+                ) {
+                    // set hex as outdated
+                    dispatch({
+                        type: "SET_HEX_OUTDATED",
+                        payload: true
+                    });
+                } else {
+                    // not outdated
+                    dispatch({
+                        type: "SET_HEX_OUTDATED",
+                        payload: false
+                    });
+                }
                 setLabels(l);
                 setValues(v);
             });

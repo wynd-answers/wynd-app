@@ -9,7 +9,8 @@ const initialState = {
   address: null,
   signingClient: null,
   balance: 0,
-  junoBalance : 0
+  junoBalance : 0,
+  outdatedHexData: false
 };
 
 function reducer(state, action) {
@@ -18,6 +19,11 @@ function reducer(state, action) {
       return {
         ...state,
         chosenHex: action.payload,
+      };
+    case "SET_HEX_OUTDATED":
+      return {
+        ...state,
+        outdatedHexData: action.payload,
       };
     case "SET_MESSAGE":
       return {

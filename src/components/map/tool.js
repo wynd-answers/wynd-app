@@ -1,13 +1,12 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { GlobalContext } from "../../context/store";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Grid, Paper, Typography, IconButton, InputLabel, OutlinedInput, InputAdornment, FormControl, Slide, Accordion, AccordionSummary, AccordionDetails, CircularProgress } from "@mui/material";
-import { Close, Send, ExpandMore } from "@mui/icons-material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Grid, Paper, Typography, IconButton, InputLabel, OutlinedInput, InputAdornment, FormControl, Slide, Accordion, AccordionSummary, AccordionDetails, CircularProgress, Divider } from "@mui/material";
+import { Close, Send, ExpandMore, Info, Dangerous } from "@mui/icons-material";
 import { getInvestments, investWynd } from "../../utils/client";
 import { chain } from "../../context/chain";
 import { h3ToGeo } from "h3-js";
 import Map from "./map";
 import Chart from "./chart";
-
 
 /**
  * Tool contains everything needed for the main-application, e.g. Map
@@ -35,13 +34,22 @@ const Tool = () => {
                     const rowData = [];
                     let totalAmount = 0;
                     res.investments.map(investment => {
-                        const rowEntry = {
-                            hex: investment.hex,
-                            amount: parseInt(investment.amount) / 1000000
+
+                        // Sum up investment amount, if multiple investments for a hex
+                        if (rowData.find(el => el.hex === investment.hex)) {
+                            rowData.find(el => el.hex === investment.hex).amount += parseInt(investment.amount) / 1000000
+
+                            // Or just create a new entry
+                        } else {
+                            const rowEntry = {
+                                hex: investment.hex,
+                                amount: parseInt(investment.amount) / 1000000
+                            }
+                            totalAmount += rowEntry.amount;
+                            rowData.push(rowEntry);
                         }
-                        totalAmount += rowEntry.amount;
-                        rowData.push(rowEntry);
                     });
+
                     setTotalInvested(totalAmount);
                     setRows(rowData);
                 })
@@ -58,6 +66,32 @@ const Tool = () => {
 
     // Invest to hex
     const handleSend = async () => {
+
+        // If outdated data, show error
+        if (state.outdatedHexData) {
+            dispatch({
+                type: "SET_MESSAGE",
+                payload: {
+                    message: `You may only invest in hexagons whose last measurement was no longer than ${process.env.GATSBY_DATA_MAX_AGE} days ago.`,
+                    severity: "error",
+                },
+            });
+            return;
+        }
+
+        // If no amount entered, show error
+        if (!amount || amount === 0) {
+            dispatch({
+                type: "SET_MESSAGE",
+                payload: {
+                    message: `Please enter the amount you want to invest.`,
+                    severity: "error",
+                },
+            });
+            return;
+        }
+
+        // Invest!
         setLoadingInvest(true);
         try {
             const res = await investWynd(state.signingClient, state.address, state.chosenHex, amount * 1000000);
@@ -69,6 +103,7 @@ const Tool = () => {
                 },
             });
         } catch (e) {
+            console.log(e)
             dispatch({
                 type: "SET_MESSAGE",
                 payload: {
@@ -79,6 +114,7 @@ const Tool = () => {
         }
         setLoadingInvest(false);
     }
+
 
     // Chose a hex from invested-table
     const clickInvested = (hex) => {
@@ -106,8 +142,8 @@ const Tool = () => {
                 </Grid>
                 <Slide container={containerRef.current} direction="right" in={showInfo} mountOnEnter unmountOnExit>
                     <Grid item sx={{ position: 'absolute', left: 0, height: '100%' }} xs={4}>
-                        <Grid sx={{ height: '100%' }} container >
-                            <Paper variant="outlined" sx={{ p: 2, height: '100%' }}>
+                        <Paper variant="outlined" sx={{ p: 2, height: '100%' }}>
+                            <Grid sx={{ height: '100%' }} container >
                                 {!loadingInvest ?
                                     <>
                                         <Grid item xs={12}>
@@ -128,37 +164,51 @@ const Tool = () => {
                                             <Paper sx={{ mb: 2 }}>
                                                 <Chart hex={state.chosenHex} />
                                             </Paper>
+                                            <Divider sx={{ my: 3 }} />
                                             <Typography variant="body">
                                                 <strong>Invested Amount: </strong>
                                                 {
                                                     rows.find(el => el.hex === state.chosenHex)
                                                         ? rows.find(el => el.hex === state.chosenHex).amount
                                                         : 0
-                                                }
-                                                WYND
+                                                } WYND
+                                            </Typography>
+                                            <br />
+                                            <Typography variant="body">
+                                                <strong>Available Amount: </strong>
+                                                {state.balance} WYND
                                             </Typography>
                                         </Grid>
-                                        <Grid xs={12}>
-                                            <FormControl sx={{ mt: 2 }}>
-                                                <InputLabel htmlFor="outlined-adornment-amount">Invest some WYND!</InputLabel>
-                                                <OutlinedInput
-                                                    id="outlined-adornment-amount"
-                                                    type="text"
-                                                    value={amount}
-                                                    onChange={(e) => setAmount(e.target.value)}
-                                                    endAdornment={
-                                                        <InputAdornment position="end">
-                                                            <IconButton
-                                                                onClick={() => handleSend()}
-                                                                edge="end"
-                                                            >
-                                                                <Send />
-                                                            </IconButton>
-                                                        </InputAdornment>
-                                                    }
-                                                    label="Amount"
-                                                />
-                                            </FormControl>
+                                        <Grid item xs={12}>
+                                            {!state.outdatedHexData ?
+                                                <FormControl sx={{ mt: 2 }}>
+                                                    <InputLabel htmlFor="outlined-adornment-amount">Invest some WYND!</InputLabel>
+                                                    <OutlinedInput
+                                                        id="outlined-adornment-amount"
+                                                        type="text"
+                                                        value={amount}
+                                                        onChange={(e) => setAmount(e.target.value)}
+                                                        endAdornment={
+                                                            <InputAdornment position="end">
+                                                                <IconButton
+                                                                    onClick={() => handleSend()}
+                                                                    edge="end"
+                                                                >
+                                                                    <Send />
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        }
+                                                        label="Amount"
+                                                    />
+                                                </FormControl>
+                                                :
+                                                <>
+                                                    <Divider sx={{ my: 2 }} />
+                                                    <Typography variant="subtitle2" color="red">
+                                                        You may only invest in hexagons whose last measurement was no longer than {process.env.GATSBY_DATA_MAX_AGE} days ago.
+                                                    </Typography>
+                                                </>
+                                            }
                                         </Grid>
                                     </>
                                     :
@@ -169,8 +219,8 @@ const Tool = () => {
                                         <CircularProgress size={200} />
                                     </Grid>
                                 }
-                            </Paper>
-                        </Grid>
+                            </Grid>
+                        </Paper>
                     </Grid>
                 </Slide >
                 <Grid item sx={{ position: 'absolute', right: 0 }} xs={4}>
