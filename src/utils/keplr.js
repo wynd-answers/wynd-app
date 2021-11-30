@@ -92,16 +92,12 @@ export const connectKeplr = async (chain, dispatch) => {
     payload: { signer: offlineSigner, address: accounts[0].address },
   });
 
-  console.log(accounts);
-
   // Init cosmjs client
   const cosmJS = await SigningCosmWasmClient.connectWithSigner(
     chain.rpc,
     offlineSigner,
     accounts[0].address
   );
-
-  console.log(cosmJS);
 
   dispatch({
     type: "SET_COSMJS",
