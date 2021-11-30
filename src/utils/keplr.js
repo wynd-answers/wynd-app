@@ -83,7 +83,7 @@ export const connectKeplr = async (chain, dispatch) => {
   }
 
   // Setup signer
-  const offlineSigner = window.getOfflineSignerOnlyAmino(chain.chain_id);
+  const offlineSigner = await window.getOfflineSignerAuto(chain.chain_id);
   const accounts = await offlineSigner.getAccounts().catch((e) => console.log(e));
 
   dispatch({
