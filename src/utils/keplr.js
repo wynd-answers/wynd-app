@@ -1,5 +1,5 @@
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-import { getWyndBalance } from "./faucet";
+import { getWyndBalance } from "./client";
 
 export const checkExtensionAndBrowser = () => {
   if (typeof window !== `undefined`) {
@@ -70,7 +70,6 @@ export const connectKeplr = async (chain, dispatch) => {
     return false;
   }
 
-
   // suggest chain and approve network
   let error = false;
   await suggestChain(chain);
@@ -84,7 +83,7 @@ export const connectKeplr = async (chain, dispatch) => {
   }
 
   // Setup signer
-  const offlineSigner = window.getOfflineSignerOnlyAmino(chain.chain_id);
+  const offlineSigner = await window.getOfflineSignerAuto(chain.chain_id);
   const accounts = await offlineSigner.getAccounts().catch((e) => console.log(e));
 
   dispatch({
@@ -92,12 +91,16 @@ export const connectKeplr = async (chain, dispatch) => {
     payload: { signer: offlineSigner, address: accounts[0].address },
   });
 
+  console.log(accounts)
+
   // Init cosmjs client
   const cosmJS = await SigningCosmWasmClient.connectWithSigner(
     chain.rpc,
     offlineSigner,
     accounts[0].address
   );
+
+  console.log(cosmJS);
 
   dispatch({
     type: "SET_COSMJS",

@@ -1,6 +1,6 @@
 import { Alert, Typography, Grid, CircularProgress, Button, Box } from "@mui/material";
 import React, { useState, useContext, useEffect } from "react";
-import { requestWynd, requestJuno, getWyndBalance } from "../../utils/faucet";
+import { requestWynd, requestJuno, getWyndBalance } from "../../utils/client";
 import { GlobalContext } from "../../context/store";
 import { chain } from "../../context/chain";
 
@@ -19,7 +19,7 @@ const StepTwo = ({ changeStep }) => {
 
         dispatch({
             type: "SET_BALANCE",
-            payload: { balance: bal.balance / 100000 },
+            payload: { balance: bal.balance / 1000000 },
         });
 
         setLoading(false);
