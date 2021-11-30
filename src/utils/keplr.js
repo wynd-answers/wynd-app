@@ -1,5 +1,4 @@
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-import { getWyndBalance } from "./client";
 
 export const checkExtensionAndBrowser = () => {
   if (typeof window !== `undefined`) {
@@ -84,14 +83,16 @@ export const connectKeplr = async (chain, dispatch) => {
 
   // Setup signer
   const offlineSigner = await window.getOfflineSignerAuto(chain.chain_id);
-  const accounts = await offlineSigner.getAccounts().catch((e) => console.log(e));
+  const accounts = await offlineSigner
+    .getAccounts()
+    .catch((e) => console.log(e));
 
   dispatch({
     type: "SET_WALLET",
     payload: { signer: offlineSigner, address: accounts[0].address },
   });
 
-  console.log(accounts)
+  console.log(accounts);
 
   // Init cosmjs client
   const cosmJS = await SigningCosmWasmClient.connectWithSigner(
@@ -116,6 +117,6 @@ export const connectKeplr = async (chain, dispatch) => {
     type: "SET_BALANCE_JUNO",
     payload: { balance: balance.amount },
   });
-  
+
   return [offlineSigner, accounts];
 };

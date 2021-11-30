@@ -8,18 +8,18 @@ import { GlobalContext } from "../context/store";
  * its WYND Balance
  */
 const ConnectWallet = () => {
-    const [state] = useContext(GlobalContext);
+  const [state] = useContext(GlobalContext);
 
-    return (
-        <>
-            {state.address &&
-                <Stack direction="row" spacing={2} justifyContent="flex-end">
-                    <Chip label={state.address} variant="outlined" />
-                    <Chip label={state.balance + ` WYND`} />
-                </Stack>
-            }
-        </>
-    );
+  return (
+    <>
+      {state.address && (
+        <Stack direction="row" spacing={2} justifyContent="flex-end">
+          <Chip label={state.address} variant="outlined" />
+          <Chip label={state.balance + ` WYND`} />
+        </Stack>
+      )}
+    </>
+  );
 };
 
 export default ConnectWallet;

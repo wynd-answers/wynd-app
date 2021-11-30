@@ -25,8 +25,8 @@ const IndexPage = () => {
         </Grid>
       </Container>
       <Tool />
-    </Layout >
+    </Layout>
   );
-}
+};
 
 export default IndexPage;

@@ -1,7 +1,7 @@
 import { calculateFee, GasPrice } from "@cosmjs/stargate";
-import { CosmWasmClient } from '@cosmjs/cosmwasm-stargate';
+import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { FaucetClient } from "@cosmjs/faucet-client";
-import { toBase64, toAscii } from "@cosmjs/encoding"
+import { toBase64, toAscii } from "@cosmjs/encoding";
 /**
  * Faucet
  */
@@ -11,16 +11,16 @@ export const requestWynd = async (client, address) => {
   return await client.execute(
     address,
     process.env.GATSBY_WYND_FAUCET,
-    { "request_funds": {} },
-    calculateFee(200_000, GasPrice.fromString("0.025ujunox")),
+    { request_funds: {} },
+    calculateFee(200_000, GasPrice.fromString("0.025ujunox"))
   );
-}
+};
 
 // Request JUNO Tokens from Faucet
 export const requestJuno = async (address, token) => {
   const client = new FaucetClient(process.env.GATSBY_JUNO_FAUCET_URL);
   return await client.credit(address, token);
-}
+};
 
 /**
  * Queries
@@ -30,11 +30,10 @@ export const requestJuno = async (address, token) => {
 export const getInvestments = async (address, rpcUrl) => {
   const client = await CosmWasmClient.connect(rpcUrl);
 
-  return await client.queryContractSmart(
-    process.env.GATSBY_INVEST_ADDRESS,
-    { list_investments: { investor: address } }
-  );
-}
+  return await client.queryContractSmart(process.env.GATSBY_INVEST_ADDRESS, {
+    list_investments: { investor: address },
+  });
+};
 
 // Querying current WYND Balance for address
 export const getWyndBalance = async (address, rpcUrl) => {
@@ -44,7 +43,7 @@ export const getWyndBalance = async (address, rpcUrl) => {
     process.env.GATSBY_WYND_TOKEN_CONTRACT,
     { balance: { address } }
   );
-}
+};
 
 /**
  * Invest
@@ -58,8 +57,8 @@ export const investWynd = async (client, address, hex, amount) => {
       contract: process.env.GATSBY_INVEST_ADDRESS,
       amount: amount.toString(),
       msg: encodeMsg(invest),
-    }
-  }
+    },
+  };
 
   return await client?.execute(
     address,
@@ -68,15 +67,16 @@ export const investWynd = async (client, address, hex, amount) => {
     {
       // fee
       gas: "400000",
-      amount: [{
-        denom: "ujunox",
-        amount: "10000",
-      }]
+      amount: [
+        {
+          denom: "ujunox",
+          amount: "10000",
+        },
+      ],
     },
     "Make Investment"
-  )
-}
-
+  );
+};
 
 /**
  * Helpers

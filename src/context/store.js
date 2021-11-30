@@ -9,8 +9,8 @@ const initialState = {
   address: null,
   signingClient: null,
   balance: 0,
-  junoBalance : 0,
-  outdatedHexData: false
+  junoBalance: 0,
+  outdatedHexData: false,
 };
 
 function reducer(state, action) {
@@ -62,9 +62,7 @@ function reducer(state, action) {
 const Store = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-
   useEffect(() => {
-
     if (state.wallet) {
       setTimeout(() => connectKeplr(chain, dispatch), 500);
     }
@@ -78,7 +76,7 @@ const Store = ({ children }) => {
     });
 
     return () => {
-      window.removeEventListener("keplr_keystorechange", () => { });
+      window.removeEventListener("keplr_keystorechange", () => {});
     };
   }, []);
 
