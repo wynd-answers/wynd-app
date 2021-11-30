@@ -27,7 +27,7 @@ const Footer = () => {
         <Grid item xs={2} />
         <Grid item xs={2}>
           <Typography variant="h6">
-            <strong>Lorem</strong>
+            <strong>Junø</strong>
           </Typography>
           <List dense>
             <ListItem disablePadding>
@@ -35,10 +35,11 @@ const Footer = () => {
                 color="inherit"
                 sx={{ lineHeight: 1.5 }}
                 underline="hover"
+                target="_blank"
                 variant="body1"
-                href="#"
+                href="https://junonetwork.io/"
               >
-                News
+                Homepage
               </Link>
             </ListItem>
             <ListItem disablePadding>
@@ -47,9 +48,22 @@ const Footer = () => {
                 sx={{ lineHeight: 1.5 }}
                 underline="hover"
                 variant="body1"
-                href="#"
+                target="_blank"
+                href="https://docs.junonetwork.io/"
               >
-                News
+                Docs
+              </Link>
+            </ListItem>
+            <ListItem disablePadding>
+              <Link
+                color="inherit"
+                sx={{ lineHeight: 1.5 }}
+                underline="hover"
+                target="_blank"
+                variant="body1"
+                href="https://github.com/CosmosContracts"
+              >
+                Github
               </Link>
             </ListItem>
             <ListItem disablePadding>
@@ -58,9 +72,10 @@ const Footer = () => {
                 sx={{ lineHeight: 1.5 }}
                 underline="hover"
                 variant="body1"
-                href="#"
+                target="_blank"
+                href="https://discord.gg/jGAQubgCRD"
               >
-                News
+                Discord
               </Link>
             </ListItem>
             <ListItem disablePadding>
@@ -69,38 +84,17 @@ const Footer = () => {
                 sx={{ lineHeight: 1.5 }}
                 underline="hover"
                 variant="body1"
-                href="#"
+                target="_blank"
+                href="https://medium.com/@JunoNetwork"
               >
-                News
-              </Link>
-            </ListItem>
-            <ListItem disablePadding>
-              <Link
-                color="inherit"
-                sx={{ lineHeight: 1.5 }}
-                underline="hover"
-                variant="body1"
-                href="#"
-              >
-                News
-              </Link>
-            </ListItem>
-            <ListItem disablePadding>
-              <Link
-                color="inherit"
-                sx={{ lineHeight: 1.5 }}
-                underline="hover"
-                variant="body1"
-                href="#"
-              >
-                News
+                Medium
               </Link>
             </ListItem>
           </List>
         </Grid>
         <Grid item xs={2}>
           <Typography variant="h6">
-            <strong>Lorem</strong>
+            <strong>Cosmos</strong>
           </Typography>
           <List dense>
             <ListItem disablePadding>
@@ -109,9 +103,10 @@ const Footer = () => {
                 sx={{ lineHeight: 1.5 }}
                 underline="hover"
                 variant="body1"
-                href="#"
+                href="https://cosmos.network/"
+                target="_blank"
               >
-                News
+                Homepage
               </Link>
             </ListItem>
             <ListItem disablePadding>
@@ -120,9 +115,10 @@ const Footer = () => {
                 sx={{ lineHeight: 1.5 }}
                 underline="hover"
                 variant="body1"
-                href="#"
+                href="https://hackatom.org/"
+                target="_blank"
               >
-                News
+                Hackatom
               </Link>
             </ListItem>
             <ListItem disablePadding>
@@ -131,16 +127,17 @@ const Footer = () => {
                 sx={{ lineHeight: 1.5 }}
                 underline="hover"
                 variant="body1"
-                href="#"
+                href="https://discord.gg/cosmosnetwork"
+                target="_blank"
               >
-                News
+                Discord
               </Link>
             </ListItem>
           </List>
         </Grid>
         <Grid item xs={2}>
           <Typography variant="h6">
-            <strong>Lorem</strong>
+            <strong>Ressources</strong>
           </Typography>
           <List dense>
             <ListItem disablePadding>
@@ -149,31 +146,10 @@ const Footer = () => {
                 sx={{ lineHeight: 1.5 }}
                 underline="hover"
                 variant="body1"
-                href="#"
+                href="https://github.com/cosmos/cosmjs"
+                target="_blank"
               >
-                News
-              </Link>
-            </ListItem>
-            <ListItem disablePadding>
-              <Link
-                color="inherit"
-                sx={{ lineHeight: 1.5 }}
-                underline="hover"
-                variant="body1"
-                href="#"
-              >
-                News
-              </Link>
-            </ListItem>
-            <ListItem disablePadding>
-              <Link
-                color="inherit"
-                sx={{ lineHeight: 1.5 }}
-                underline="hover"
-                variant="body1"
-                href="#"
-              >
-                News
+                cosmJS
               </Link>
             </ListItem>
           </List>
@@ -193,14 +169,14 @@ const Footer = () => {
           justifyContent="flex-end"
           xs={6}
         >
-          <Link href="#" color="inherit" underline="none">
-            <Twitter />
-          </Link>
-          <Link sx={{ pl: 3 }} href="#" color="inherit" underline="none">
+          <Link
+            sx={{ pl: 3 }}
+            href="https://github.com/wynd-answers"
+            color="inherit"
+            underline="none"
+            target="_blank"
+          >
             <GitHub />
-          </Link>
-          <Link sx={{ pl: 3 }} href="#" color="inherit" underline="none">
-            <YouTube />
           </Link>
         </Grid>
       </Grid>
