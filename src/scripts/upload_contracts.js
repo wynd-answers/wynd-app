@@ -3,6 +3,7 @@
 
 /* eslint-disable @typescript-eslint/naming-convention */
 const axios = require('axios');
+const { readFileSync } = require('fs');
 const { SigningCosmWasmClient } = require('@cosmjs/cosmwasm-stargate');
 const { GasPrice } = require('@cosmjs/stargate');
 const { DirectSecp256k1HdWallet } = require('@cosmjs/proto-signing');
@@ -23,6 +24,14 @@ const contracts = [
     wasmUrl:
       'https://github.com/CosmWasm/cosmwasm-plus/releases/download/v0.10.2/cw20_base.wasm',
   },
+  {
+    name: 'wynd-faucet',
+    wasmFile: './contracts/wynd_faucet.wasm',
+  },
+  {
+    name: 'wynd-invest',
+    wasmFile: './contracts/wynd_invest.wasm',
+  },  
 ];
 
 async function downloadWasm(url) {
@@ -60,8 +69,18 @@ async function main() {
 
   const uploaded = [];
   for (const contract of contracts) {
-    console.info(`Downloading ${contract.name} at ${contract.wasmUrl}...`);
-    const wasm = await downloadWasm(contract.wasmUrl);
+    let wasm;
+    if (contract.wasmUrl) {
+      console.info(`Downloading ${contract.name} at ${contract.wasmUrl}...`);
+      wasm = await downloadWasm(contract.wasmUrl);
+    } else if (contract.wasmFile) {
+      console.info(`Loading ${contract.name} from ${contract.wasmFile}...`);
+      wasm = readFileSync(contract.wasmFile);
+    } else {
+      console.error(`Invalid config: ${contract}`);
+      throw new Error("Abort");
+    }
+
     const receipt = await client.upload(
       address,
       wasm,
@@ -86,4 +105,6 @@ main().then(
   }
 );
 
-// NOTE: code id 75
+// NOTE: cw20-base 75
+// NOTE: wynd-faucet 76
+// NOTE: wynd-invest 183

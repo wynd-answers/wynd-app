@@ -1,25 +1,40 @@
 #!/usr/bin/env node
 /*jshint esversion: 8 */
 
-// Usage: ./invest.js 832693fffffffff
-
 /* eslint-disable @typescript-eslint/naming-convention */
 const axios = require("axios");
-const { toAscii, toBase64 } = require('@cosmjs/encoding');
 const { SigningCosmWasmClient } = require('@cosmjs/cosmwasm-stargate');
 const { DirectSecp256k1HdWallet } = require('@cosmjs/proto-signing');
+const { ConstructionOutlined } = require("@mui/icons-material");
 
 // from ../context/chain.js
 const config = {
   endpoint: 'https://rpc.uni.junomint.com:443/',
   bech32prefix: 'juno',
   feeDenom: 'ujunox',
+  // this one controls the oracle
   mnemonic:
-    'wild enact trust mean try snack evoke bring gown core curtain ahead',
+    'wagon romance envelope exile movie pencil happy one keep large glove floor',
 };
 
 const investAddr = "juno12pdkmn8qf09rn5yuf6lpreml8ypf45uzkvwyeztaqpjncpfwk0kqp3mrpr";
-const wyndAddress = "juno1wjur4gvzn0ccnffyuhvs3qxgsxn6ga86wpd2y8s2ufck4c2zmrfsyn44rq";
+const apiUrl = "https://api.wyndex.io/api/fetch_latest";
+
+async function loadOracleData(since) {
+    const { data }  = await axios.get(apiUrl);
+    console.debug(`Got: ${Object.keys(data).length} results`);
+
+    let measures = Object.entries(data).map(([index, v]) => {
+        const [count, timestamp] = v;
+        const value = count.toString();
+        let time = Math.floor(Date.parse(timestamp) / 1000);
+        return { index, value, time}
+    }).filter(x => x.time > since);
+
+    console.log(`After filter: ${measures.length}`);
+    console.log(measures[17]);
+    return measures;
+}
 
 function logToEvents(logs) {
     let events = logs[0].events.map(eventObject);
@@ -31,19 +46,7 @@ function eventObject(event) {
     return { [event.type]: attributes };
 }
 
-// this turns a JSON object to a base64-encoding of the serialized JSON
-// this is needed when sending cw20 tokens to a contracts (see "send" below)
-function encodeMsg(obj) {
-  return toBase64(toAscii(JSON.stringify(obj)));
-}
-
 async function main() {
-    if (process.argv.length != 3) {
-      console.error("Usage: ./invest.js <r3 index>");
-      process.exit(1);
-    }
-    const hex = process.argv[2];
-
     // use the faucet account to upload (it has fee tokens)
     const wallet = await DirectSecp256k1HdWallet.fromMnemonic(config.mnemonic, {
       prefix: config.bech32prefix,
@@ -59,35 +62,26 @@ async function main() {
       wallet,
       options
     );
-
-    let juno = await client.getBalance(address, "ujunox");
-    console.info(`Balance: ${juno.amount} ${juno.denom}`);
-
-    let { balance } = await client.queryContractSmart(wyndAddress, {balance: {address}});
-    console.info(`Balance: ${balance} uWYND`);
-
-    let { investments } = await client.queryContractSmart(investAddr, {list_investments: {investor: address}});
-    console.info(`All investments:`);
-    investments.forEach(x => console.log(x));
+    // let balance = await client.getBalance(address, "ujunox");
+    // console.info(`Balance: ${balance.amount} ${balance.denom}`);
+  
+    // Data in the last 7 days
+    const since = Math.floor(Date.now() / 1000) - 7 * 86400;
+    const values = await loadOracleData(since);
+    const msg = { store_oracle: { values }};
 
     const fee = {
-      gas: "400000",
+      // those are many indexes to add!
+      gas: "3200000",
       amount: [{
         denom: config.feeDenom,
         // 0.025 * gas
-        amount: "10000",
+        amount: "80000",
       }]
     };
-
-    const invest = { invest: { hex }};
-    const send = { send: {
-      contract: investAddr,
-      amount: "123000000", // 123 WYND
-      msg: encodeMsg(invest),
-    }}
-
+    
     console.log("Executing...");
-    const { logs } = await client.execute(address, wyndAddress, send, fee, "Make Investment");
+    const { logs } = await client.execute(address, investAddr, msg, fee, "New oracle data");
 
     console.debug(`Execute succeeded. Receipt: `);
     const events = logToEvents(logs);
