@@ -159,8 +159,9 @@ const Tool = () => {
                                                 <Close fontSize="inherit" />
                                             </IconButton>
                                             <Typography sx={{ mb: 2 }} color="white" variant="h6">
-                                                Hexagon {state.chosenHex}
+                                                Hexagon <strong>{state.chosenHex}</strong>
                                             </Typography>
+                                            <Divider sx={{ my: 3 }} />
                                             <Paper sx={{ mb: 2 }}>
                                                 <Chart hex={state.chosenHex} />
                                             </Paper>
