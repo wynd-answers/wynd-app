@@ -25,4 +25,11 @@ Still WIP
 
 ## Frontend
 
-Keplr, map box, the hex graphing library, CosmJS....
+* [Keplr](https://wallet.keplr.app/#/dashboard) - Connecting to user's wallet
+* [CosmJS](https://github.com/cosmos/cosmjs) - Interacting with contracts and the blockchain
+* [Mapbox](https://www.mapbox.com/) - Map API
+* [DeckGL](https://deck.gl/) - Used to show datasets on the map
+* [H3Js](https://github.com/uber/h3-js) - Helps us when it comes to calculating hexagons and classic coords
+* [ChartJS](https://www.chartjs.org/) - Showing historical data in charts
+* [MUI](https://mui.com/) - React component library
+* [Gatsby](https://www.gatsbyjs.com/) - Static page generator
