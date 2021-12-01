@@ -23,12 +23,60 @@ but any real system should configure this for several months and use a time-aver
 
 ## Data Sources
 
-For the original data, we use [Emissions API](https://emissions-api.org/), which 
+For the original data, we use [Emissions API](https://emissions-api.org/), which is based on public domain
+ESA (European Space Agency) satellite data. We poll the data for the last several months for the US, and
+the combine it into a standard grid so nearby measurements are grouped together.
 
-Hexagons
+The first product is measuring Methane, which is a very potent greenhouse gas. 
+
+Further work would be to normalize the data to remove some of the noise/variation. This could be done by
+averaging, but also we would like to investigate if there is a high correlation between wind/rain and
+pollution levels (high wind or rain removing atmospheric pollution) and if so, we could compensate for this
+correllation by reading in historical weather information and processing the data from Emissions API, before
+we perform some time averaging on it.
+
+Once we have "clean data" for one metric, we would like to add the other frequently updated pollution sources
+(carbon monoxide and ozone), preprocess them as above, and then combine them to produce a combine WYND index
+that represents a more holistic view of air quality.
+
+We chose one country to limit the scale of the data we work with. And chose the USA, as it is the most widely
+recognized country. (We also considered Europe, but that would involve 30+ different API calls, so we started with the
+simpler one).
+
+## Hexagons
+
+Since every measurement is at a slightly different location, we need to group them together in a reasonable
+spatial resolution to allow meaningful aggregation and historical data. To do so, we searched for a regular grid system
+that covers the planet and went with the [H3 Hexagonal Hierarchical Spatial Index](https://eng.uber.com/h3/).
+
+This can easily be adjusted to different spatial resolutions and covers the whole globe with mostly-equally sized
+hexagons in contrast to eg. the distortial of squares in the Mercator projection.
+
 ## Frontend App
 
-## Tokens
+The [frontend app](https://wyndex.io) provides the user access to both the data platform as well as the blockchain.
+It queries the latest values of all grid points from the data platform, and when you click on a hexagon, it will 
+also show a graph of the historical values of pollution.
 
+It also uses Keplr and connects to Juno's Uni testnet. We use a faucet API server to give out 10 JUNOX to each new user
+so they can pay gas. And then use a smart contract faucet to release 10.000 WYND to each user once, to allow them
+to invest in the protocol, allowing a quick and easy onboarding experience for the prototype.
+
+Once you have connected your wallet and filled it with tokens, you can browse the different hexagons and invest in the
+one(s) that you would like to clean up. We display all your current investments in the side bar, and also allow
+you to withdraw any investments that have reached maturity, calculating your winnings.
+
+## Contracts
+
+We use [CosmWasm contracts](https://github.com/wynd-answers/wynd-contracts/tree/main/contracts) to handle
+the blockchain side:
+
+* `cw20-base` we use this standard contract to provide the WYND contract
+* `wynd-faucet` we use this to provide a smart contract faucet to give out some WYND tokens once to each user
+* `wynd-invest` handles all the investments and payments and receives data feeds from the oracles
+* `wynd-oracle` (TODO) checks data feeds from multiple oracles to ensure validity
+
+The main contract you interact with is the `wynd-invest` contract. You can [view the API here](https://github.com/wynd-answers/wynd-contracts/blob/main/contracts/wynd-invest/src/msg.rs). But the main actions are "invest", "withdraw"
+and "store_oracle". Queries will show detailed info for one hex, or list all investments for one user.
 
 TODO: other more detailed tech document - explaining the technical details and challenges, digging into oracles
