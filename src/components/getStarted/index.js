@@ -38,7 +38,7 @@ const GetStarted = () => {
     if (state.balance > 0 && localStorage.getItem("keplrConnected")) {
         close();
     }
-  });
+  }, []);
 
   return (
     <Modal
