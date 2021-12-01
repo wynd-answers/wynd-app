@@ -22,7 +22,7 @@ For the prototype, we have a quite short investment duration (2 days) just to se
 but any real system should configure this for several months and use a time-averaged value to encourage long-term improvements
 
 This document provides a high-level overview of the project. You can also
-[read more about the tech stack](./TECH_STACK), or get information on [how to run this code](./DEVELOPMENT.md)
+[read more about the tech stack](./TECH_STACK.md), or get information on [how to run this code](./DEVELOPMENT.md)
 
 ## Data Sources
 
