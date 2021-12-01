@@ -1,6 +1,3 @@
-## 🚀 Features
-- TODO
-
 ## 💡 Get started
 Clone this repo to get started:
 ```sh
