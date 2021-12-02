@@ -70,7 +70,7 @@ const Map = forwardRef((props, ref) => {
 
           if (highest < res.data[key][0]) {
             highest = res.data[key][0];
-          } else if (lowest > res.data[key][0]) {
+          } else if (lowest > res.data[key][0] && res.data[key][0] >= 1700) {
             lowest = res.data[key][0];
           }
 
