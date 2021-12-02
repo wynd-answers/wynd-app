@@ -12,12 +12,12 @@ import {
   AccordionSummary,
   AccordionDetails,
   Button,
-  Stack,
   Grid,
   Paper,
   Typography,
   Box,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { withStyles } from "@mui/styles";
@@ -150,13 +150,15 @@ const InvestedBox = ({ rows, withdrawOpen, totalInvested, clickInvested }) => {
     <>
       <Grid item>
         <Paper>
-          <StyledButton
-            size="large"
-            variant="contained"
-            onClick={() => setWithdrawOpen(true)}
-          >
-            <Redeem />
-          </StyledButton>
+          <Tooltip title="Withdraw">
+            <StyledButton
+              size="large"
+              variant="contained"
+              onClick={() => setWithdrawOpen(true)}
+            >
+              <Redeem />
+            </StyledButton>
+          </Tooltip>
         </Paper>
       </Grid>
       <Grid item>
