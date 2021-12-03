@@ -20,6 +20,11 @@ const config = {
 const investAddr = "juno12pdkmn8qf09rn5yuf6lpreml8ypf45uzkvwyeztaqpjncpfwk0kqp3mrpr";
 const apiUrl = "https://api.wyndex.io/api/fetch_latest";
 
+function validHex(measurement) {
+  const badIndexes = ["832683fffffffff"];
+  return !measurement.index.startsWith("8344a") && !badIndexes.find(idx => measurement.index == idx);
+}
+
 async function loadOracleData(since) {
     const { data }  = await axios.get(apiUrl);
     console.debug(`Got: ${Object.keys(data).length} results`);
@@ -29,7 +34,7 @@ async function loadOracleData(since) {
         const value = count.toString();
         let time = Math.floor(Date.parse(timestamp) / 1000);
         return { index, value, time}
-    }).filter(x => x.time > since);
+    }).filter(x => x.time > since).filter(validHex);
 
     console.log(`After filter: ${measures.length}`);
     console.log(measures[17]);
