@@ -59,11 +59,11 @@ async function main() {
     options
   );
   const fee = {
-    gas: "2345000",
+    gas: "4000000",
     amount: [{
       denom: config.feeDenom,
       // 0.025 * gas
-      amount: "60000",
+      amount: "100000",
     }]
   };
 
@@ -107,4 +107,4 @@ main().then(
 
 // NOTE: cw20-base 75
 // NOTE: wynd-faucet 76
-// NOTE: wynd-invest was 183, update 193
+// NOTE: wynd-invest was 183, update 201
