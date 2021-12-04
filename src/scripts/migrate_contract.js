@@ -15,7 +15,7 @@ const config = {
 };
 
 const contractAddr = "juno12pdkmn8qf09rn5yuf6lpreml8ypf45uzkvwyeztaqpjncpfwk0kqp3mrpr";
-const newCodeId = 201;
+const newCodeId = 208;
 
 async function main() {
   // use the faucet account to upload (it has fee tokens)
