@@ -2,6 +2,7 @@ import { calculateFee, GasPrice } from "@cosmjs/stargate";
 import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { FaucetClient } from "@cosmjs/faucet-client";
 import { toBase64, toAscii } from "@cosmjs/encoding";
+import { chain } from "../context/chain";
 /**
  * Faucet
  */
@@ -75,6 +76,29 @@ export const investWynd = async (client, address, hex, amount) => {
       ],
     },
     "Make Investment"
+  );
+};
+
+// Withdraw all
+export const withdrawWynd = async (client, address) => {
+  const withdraw = { withdraw: {} };
+  const fee = {
+    gas: "800000",
+    amount: [
+      {
+        denom: "ujunox",
+        // 0.025 * gas
+        amount: "20000",
+      },
+    ],
+  };
+
+  return await client?.execute(
+    address,
+    process.env.GATSBY_INVEST_ADDRESS,
+    withdraw,
+    fee,
+    "Withdraw Investments"
   );
 };
 

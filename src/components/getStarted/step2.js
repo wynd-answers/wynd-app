@@ -102,7 +102,7 @@ const StepTwo = ({ changeStep }) => {
 
       dispatch({
         type: "SET_BALANCE",
-        payload: { balance: res.balance / 100000 },
+        payload: { balance: res.balance / 1000000 },
       });
 
       if (state.balance > 5000) {
