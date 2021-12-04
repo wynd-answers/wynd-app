@@ -23,6 +23,7 @@ import { useTheme } from "@mui/material/styles";
 import { withStyles } from "@mui/styles";
 import {
   Redeem,
+  Info,
   ExpandMore,
   LastPage,
   FirstPage,
@@ -148,6 +149,20 @@ const InvestedBox = ({ rows, withdrawOpen, totalInvested, clickInvested }) => {
 
   return (
     <>
+      <Grid item>
+        <Paper>
+          <Tooltip title="About">
+            <StyledButton
+              size="large"
+              variant="contained"
+              href="https://github.com/wynd-answers/wynd-app/blob/main/README.md"
+              target="_blank"
+            >
+              <Info />
+            </StyledButton>
+          </Tooltip>
+        </Paper>
+      </Grid>
       <Grid item>
         <Paper>
           <Tooltip title="Withdraw">
