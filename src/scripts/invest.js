@@ -9,17 +9,8 @@ const { toAscii, toBase64 } = require('@cosmjs/encoding');
 const { SigningCosmWasmClient } = require('@cosmjs/cosmwasm-stargate');
 const { DirectSecp256k1HdWallet } = require('@cosmjs/proto-signing');
 
-// from ../context/chain.js
-const config = {
-  endpoint: 'https://rpc.uni.junomint.com:443/',
-  bech32prefix: 'juno',
-  feeDenom: 'ujunox',
-  mnemonic:
-    'wild enact trust mean try snack evoke bring gown core curtain ahead',
-};
-
-const investAddr = "juno12pdkmn8qf09rn5yuf6lpreml8ypf45uzkvwyeztaqpjncpfwk0kqp3mrpr";
-const wyndAddress = "juno1wjur4gvzn0ccnffyuhvs3qxgsxn6ga86wpd2y8s2ufck4c2zmrfsyn44rq";
+const { config, contracts } = require('./config');
+const {investAddr, wyndAddress} = contracts;
 
 function logToEvents(logs) {
     let events = logs[0].events.map(eventObject);
