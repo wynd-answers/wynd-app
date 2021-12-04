@@ -100,6 +100,15 @@ const StepOne = ({ changeStep }) => {
               Hi, seems that you're using WYND for the first time! Follow some
               simple steps to get started!
             </Typography>
+            <Typography variant="body2" sx={{ display: "block", mt: 2 }}>
+              ...or{" "}
+              <Link
+                target="_blank"
+                href="https://github.com/wynd-answers/wynd-app/blob/main/README.md"
+              >
+                Read more about the Project
+              </Link>
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Button
