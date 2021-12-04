@@ -20,6 +20,7 @@ const config = {
 const investAddr = "juno12pdkmn8qf09rn5yuf6lpreml8ypf45uzkvwyeztaqpjncpfwk0kqp3mrpr";
 const apiUrl = "https://api.wyndex.io/api/fetch_latest";
 
+
 async function loadOracleData(since) {
     const { data }  = await axios.get(apiUrl);
     console.debug(`Got: ${Object.keys(data).length} results`);
@@ -32,7 +33,7 @@ async function loadOracleData(since) {
     }).filter(x => x.time > since);
 
     console.log(`After filter: ${measures.length}`);
-    console.log(measures[17]);
+    console.log(measures[0]);
     return measures;
 }
 
@@ -42,7 +43,17 @@ function logToEvents(logs) {
 }
 
 function eventObject(event) {
-    let attributes = event.attributes.reduce((obj, attr) => Object.assign(obj, { [attr.key]: attr.value }), {});
+    let attributes = event.attributes.reduce((obj, {key, value}) => {
+      if (!obj[key]) {
+        return Object.assign(obj, { [key]: value });
+      } else if (Array.isArray(obj[key])) {
+        obj[key].push(value);
+        return obj;
+      } else {
+        obj[key] = [obj[key], value];
+        return obj;
+      }
+    }, {});
     return { [event.type]: attributes };
 }
 
