@@ -7,10 +7,10 @@ import {
   Button,
   CircularProgress,
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { GlobalContext } from "../context/store";
 import { DataGrid } from "@mui/x-data-grid";
-import { ArrowCircleDown, ArrowCircleUp } from "@mui/icons-material";
+import { ArrowCircleDown, ArrowCircleUp, Check, Close } from "@mui/icons-material";
 import { withdrawWynd } from "../utils/client";
 
 const style = {
@@ -18,7 +18,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 800,
+  width: 1000,
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
@@ -28,11 +28,41 @@ const style = {
 const compareValues = (a, b) => ((a - b) / a) * 100.0;
 
 const columns = [
-  { field: "date_invested", headerName: "Date Invested", width: 100 },
+  {
+    field: "invested",
+    headerName: "Date Invested",
+    width: 100,
+    type: "date",
+    valueFormatter: (params) => {
+      return new Date(parseInt(params.value) * 1000).toLocaleDateString(
+        "en-US"
+      );
+    },
+  },
   { field: "hex", headerName: "Hexagon", width: 100 },
-  { field: "invested_wynd", headerName: "Invested WYND", width: 90 },
-  { field: "value_at_invest", headerName: "Invested WYND", width: 130 },
-  { field: "value_now", headerName: "Invested WYND", width: 130 },
+  {
+    field: "amount",
+    headerName: "Invested WYND",
+    width: 90,
+    renderCell: (params) => params.value / 1000000 + " WYND",
+  },
+  {
+    field: "baseline_index",
+    headerName: "Invested at Index",
+    width: 130,
+    renderCell: (params) => parseFloat(params.value).toFixed(4),
+  },
+  {
+    field: "latest_index",
+    headerName: "Latest Index",
+    width: 130,
+    renderCell: (params) => parseFloat(params.value.value).toFixed(4),
+  },
+  {
+    field: "withdraw_amount",
+    headerName: "Current Value",
+    renderCell: (params) => params.value / 1000000 + " WYND",
+  },
   {
     field: "changed",
     headerName: "Value Changed By",
@@ -40,20 +70,25 @@ const columns = [
     sortable: false,
     width: 160,
     renderCell: (params) => {
+      const compared = compareValues(
+        parseFloat(params.getValue(params.id, "latest_index").value),
+        parseFloat(params.getValue(params.id, "baseline_index"))
+      ).toFixed(3);
+
       return (
         <>
-          {params.value > 0 ? (
+          {compared > 0 ? (
             <>
               <ArrowCircleUp color="error" />{" "}
               <Typography color="red" sx={{ pl: 1 }}>
-                {params.value} %
+                {compared} %
               </Typography>
             </>
           ) : (
             <>
               <ArrowCircleDown color="success" />{" "}
               <Typography color="green" sx={{ pl: 1 }}>
-                {params.value} %
+                {compared} %
               </Typography>
             </>
           )}
@@ -61,73 +96,27 @@ const columns = [
       );
     },
   },
-];
-
-const rows = [
   {
-    id: 1,
-    date_invested: "11/29/2021",
-    hex: "832675fffffffff",
-    invested_wynd: 1000,
-    value_at_invest: 1839.3493,
-    value_now: 1748.3948,
-    changed: compareValues(1748.3948, 1839.3493).toFixed(2),
-  },
-  {
-    id: 2,
-    date_invested: "11/29/2021",
-    hex: "832675fffffffff",
-    invested_wynd: 1000,
-    value_at_invest: 1748.3948,
-    value_now: 1839.3493,
-    changed: compareValues(1839.3493, 1748.3948).toFixed(2),
-  },
-  {
-    id: 3,
-    date_invested: "11/29/2021",
-    hex: "832675fffffffff",
-    invested_wynd: 1000,
-    value_at_invest: 1839.3493,
-    value_now: 1748.3948,
-    changed: compareValues(1748.3948, 1839.3493).toFixed(2),
-  },
-  {
-    id: 4,
-    date_invested: "11/29/2021",
-    hex: "832675fffffffff",
-    invested_wynd: 1000,
-    value_at_invest: 1839.3493,
-    value_now: 1748.3948,
-    changed: compareValues(1748.3948, 1839.3493).toFixed(2),
-  },
-  {
-    id: 5,
-    date_invested: "11/29/2021",
-    hex: "832675fffffffff",
-    invested_wynd: 1000,
-    value_at_invest: 1839.3493,
-    value_now: 1748.3948,
-    changed: compareValues(1748.3948, 1839.3493).toFixed(2),
-  },
-  {
-    id: 6,
-    date_invested: "11/29/2021",
-    hex: "832675fffffffff",
-    invested_wynd: 1000,
-    value_at_invest: 1839.3493,
-    value_now: 1748.3948,
-    changed: compareValues(1748.3948, 1839.3493).toFixed(2),
+    field: "can_withdraw",
+    headerName: "Ready to withdraw",
+    renderCell: (params) => {
+      return (
+        <>
+          {params.value ? <Check color="success" /> : <Close color="error" />}
+        </>
+      );
+    },
   },
 ];
-
 /**
  * Withdraw Modal Component
  * Shows a detailed list of investments and possible withdraws
  */
-const Withdraw = ({ open, close }) => {
+const Withdraw = ({ open, close, investments }) => {
   const [state, dispatch] = useContext(GlobalContext);
   const [loadingWithdraw, setLoadingWithdraw] = useState(false);
 
+  const invArr = investments.map((obj, i) => ({ ...obj, id: "false" }));
   const handleWithdraw = async () => {
     // Withdraw
     setLoadingWithdraw(true);
@@ -195,7 +184,7 @@ const Withdraw = ({ open, close }) => {
               <DataGrid
                 disableSelectionOnClick
                 autoHeight
-                rows={rows}
+                rows={invArr}
                 columns={columns}
                 pageSize={5}
                 rowsPerPageOptions={[5]}

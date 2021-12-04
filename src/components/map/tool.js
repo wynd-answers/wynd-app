@@ -1,12 +1,10 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { GlobalContext } from "../../context/store";
-import { Grid, Paper, Slide, CircularProgress, Divider } from "@mui/material";
-import { Close, Send, ExpandMore, Redeem } from "@mui/icons-material";
-import { getInvestments, investWynd } from "../../utils/client";
+import { Grid, Paper } from "@mui/material";
+import { getInvestments } from "../../utils/client";
 import { chain } from "../../context/chain";
 import { h3ToGeo } from "h3-js";
 import Map from "./map";
-import Chart from "./chart";
 import Withdraw from "../withdraw";
 import InvestedBox from "./investedBox";
 import DetailsBox from "./detailsBox";
@@ -20,6 +18,7 @@ const Tool = () => {
   const [totalInvested, setTotalInvested] = useState(0);
   const [withdrawOpen, setWithdrawOpen] = useState(false);
   const [rows, setRows] = useState([]);
+  const [investments, setInvestments] = useState([]);
 
   // Ref for details-box animation
   const containerRef = useRef(null);
@@ -34,6 +33,7 @@ const Tool = () => {
         .then((res) => {
           const rowData = [];
           let totalAmount = 0;
+          setInvestments(res.investments);
           res.investments.map((investment) => {
             // Sum up investment amount, if multiple investments for a hex
             if (rowData.find((el) => el.hex === investment.hex)) {
@@ -115,7 +115,7 @@ const Tool = () => {
           />
         </Grid>
       </Grid>
-      <Withdraw open={withdrawOpen} close={() => setWithdrawOpen(false)} />
+      <Withdraw open={withdrawOpen} close={() => setWithdrawOpen(false)} investments={investments} />
     </>
   );
 };
