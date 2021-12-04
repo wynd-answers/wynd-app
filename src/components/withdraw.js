@@ -1,8 +1,17 @@
-import { Box, Typography, Grid, Modal, Divider, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Grid,
+  Modal,
+  Divider,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../context/store";
 import { DataGrid } from "@mui/x-data-grid";
 import { ArrowCircleDown, ArrowCircleUp } from "@mui/icons-material";
+import { withdrawWynd } from "../utils/client";
 
 const style = {
   position: "absolute",
@@ -116,7 +125,33 @@ const rows = [
  * Shows a detailed list of investments and possible withdraws
  */
 const Withdraw = ({ open, close }) => {
-  const [state] = useContext(GlobalContext);
+  const [state, dispatch] = useContext(GlobalContext);
+  const [loadingWithdraw, setLoadingWithdraw] = useState(false);
+
+  const handleWithdraw = async () => {
+    // Withdraw
+    setLoadingWithdraw(true);
+    try {
+      const res = await withdrawWynd(state.signingClient, state.address);
+      dispatch({
+        type: "SET_MESSAGE",
+        payload: {
+          message: `Successfully withdrawed all in TX ${res.transactionHash}`,
+          severity: "success",
+        },
+      });
+    } catch (e) {
+      dispatch({
+        type: "SET_MESSAGE",
+        payload: {
+          message: `${e}`,
+          severity: "error",
+        },
+      });
+    }
+    setLoadingWithdraw(false);
+    close();
+  };
 
   return (
     <Modal
@@ -126,32 +161,48 @@ const Withdraw = ({ open, close }) => {
       aria-describedby="Helps new users to get some WYND Tokens / JUNO Tokens to be able to test the application."
     >
       <Box sx={style}>
-        <Grid container>
-          <Grid alignSelf="center" item xs={8}>
-            <Typography variant="h6">Investments</Typography>
+        {loadingWithdraw ? (
+          <Grid
+            container
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <CircularProgress size={200} />
           </Grid>
-          <Grid sx={{ textAlign: "right" }} item xs={4}>
-            <Button sx={{ color: "white" }} variant="outlined" size="large">
-              Withdraw All
-            </Button>
+        ) : (
+          <Grid container>
+            <Grid alignSelf="center" item xs={8}>
+              <Typography variant="h6">Investments</Typography>
+            </Grid>
+            <Grid sx={{ textAlign: "right" }} item xs={4}>
+              <Button
+                onClick={handleWithdraw}
+                sx={{ color: "white" }}
+                variant="outlined"
+                size="large"
+              >
+                Withdraw All
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider sx={{ mt: 2 }} />
+            </Grid>
+            <Grid item xs={12}>
+              <Divider sx={{ py: 2 }} />
+            </Grid>
+            <Grid item xs={12}>
+              <DataGrid
+                disableSelectionOnClick
+                autoHeight
+                rows={rows}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Divider sx={{ mt: 2 }} />
-          </Grid>
-          <Grid item xs={12}>
-            <Divider sx={{ py: 2 }} />
-          </Grid>
-          <Grid item xs={12}>
-            <DataGrid
-              disableSelectionOnClick
-              autoHeight
-              rows={rows}
-              columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-            />
-          </Grid>
-        </Grid>
+        )}
       </Box>
     </Modal>
   );
