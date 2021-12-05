@@ -4,19 +4,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 const axios = require('axios');
 const { readFileSync } = require('fs');
-const { SigningCosmWasmClient } = require('@cosmjs/cosmwasm-stargate');
-const { GasPrice } = require('@cosmjs/stargate');
-const { DirectSecp256k1HdWallet } = require('@cosmjs/proto-signing');
 
-// from ../context/chain.js
-const config = {
-  endpoint: 'https://rpc.uni.junomint.com:443/',
-  bech32prefix: 'juno',
-  feeDenom: 'ujunox',
-  gasPrice: GasPrice.fromString('0.025ujunox'),
-  mnemonic:
-    'wild enact trust mean try snack evoke bring gown core curtain ahead',
-};
+const { createSigningClient } = require('./config');
 
 const contracts = [
   {
@@ -43,29 +32,7 @@ async function downloadWasm(url) {
 }
 
 async function main() {
-  // use the faucet account to upload (it has fee tokens)
-  const wallet = await DirectSecp256k1HdWallet.fromMnemonic(config.mnemonic, {
-    prefix: config.bech32prefix,
-  });
-  const { address } = (await wallet.getAccounts())[0];
-  console.log(address);
-
-  const options = {
-    prefix: config.bech32prefix,
-  };
-  const client = await SigningCosmWasmClient.connectWithSigner(
-    config.endpoint,
-    wallet,
-    options
-  );
-  const fee = {
-    gas: "4000000",
-    amount: [{
-      denom: config.feeDenom,
-      // 0.025 * gas
-      amount: "100000",
-    }]
-  };
+  const { address, client } = await createSigningClient();
 
   const uploaded = [];
   for (const contract of contracts) {
@@ -84,7 +51,7 @@ async function main() {
     const receipt = await client.upload(
       address,
       wasm,
-      fee,
+      "auto",
       `Upload ${contract.name}`
     );
     console.debug(`Upload succeeded. Receipt: ${JSON.stringify(receipt)}`);
@@ -104,7 +71,3 @@ main().then(
     process.exit(1);
   }
 );
-
-// NOTE: cw20-base 75
-// NOTE: wynd-faucet 76
-// NOTE: wynd-invest was 183, update 201, v0.1.2 => 208
