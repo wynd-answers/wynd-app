@@ -120,7 +120,11 @@ const Tool = () => {
             <Map ref={mapRef} />
           </Paper>
         </Grid>
-        <DetailsBox rows={rows} containerRef={containerRef} />
+        <DetailsBox
+          updateRows={updateBalance}
+          rows={rows}
+          containerRef={containerRef}
+        />
         <Grid
           sx={{ position: "absolute", width: "auto", right: 0 }}
           container
