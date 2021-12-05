@@ -2,17 +2,8 @@
 /*jshint esversion: 8 */
 
 /* eslint-disable @typescript-eslint/naming-convention */
-const { SigningCosmWasmClient } = require('@cosmjs/cosmwasm-stargate');
-const { DirectSecp256k1HdWallet } = require('@cosmjs/proto-signing');
+const { accounts, contracts, createSigningClient } = require("./config");
 
-// from ../context/chain.js
-const config = {
-  endpoint: 'https://rpc.uni.junomint.com:443/',
-  bech32prefix: 'juno',
-  feeDenom: 'ujunox',
-  mnemonic:
-    'wild enact trust mean try snack evoke bring gown core curtain ahead',
-};
 
 const locations = [
   "830c00fffffffff",
@@ -843,8 +834,8 @@ const locations = [
 
 const initMsg = {
   // same as facuet account... for testing
-  oracle: "juno17ufpwjv8m8ldckj5xef8la6cusltptqcgyne7s",
-  token: "juno1wjur4gvzn0ccnffyuhvs3qxgsxn6ga86wpd2y8s2ufck4c2zmrfsyn44rq",
+  oracle: accounts.oracle,
+  token: contracts.wyndAddr,
   max_investment_hex: "999999000000", // just shy of 1 million WYND
   maturity_days: 2, // for testing
   measurement_window: 7,
@@ -852,39 +843,15 @@ const initMsg = {
 };
 
 async function main() {
-  // use the faucet account to upload (it has fee tokens)
-  const wallet = await DirectSecp256k1HdWallet.fromMnemonic(config.mnemonic, {
-    prefix: config.bech32prefix,
-  });
-  const { address } = (await wallet.getAccounts())[0];
-  console.log(address);
-
-  const options = {
-    prefix: config.bech32prefix,
-  };
-  const client = await SigningCosmWasmClient.connectWithSigner(
-    config.endpoint,
-    wallet,
-    options
-  );
-
-  const fee = {
-    // those are 800 indexes to add!
-    gas: "6400000",
-    amount: [{
-      denom: config.feeDenom,
-      // 0.025 * gas
-      amount: "160000",
-    }]
-  };
+  const {client, address} = await createSigningClient();
 
   // get this from running upload_contracts
-  const codeId = 183;
+  const codeId = contracts.investId;
 
   console.log(`Instantiating Code ${codeId} with:`);
   console.log(initMsg);
 
-  const receipt = await client.instantiate(address, codeId, initMsg, "WYND Invest", fee, {admin: address});
+  const receipt = await client.instantiate(address, codeId, initMsg, "WYND Invest", "auto", {admin: address});
 
   console.debug(`Instantiate succeeded. Receipt: ${JSON.stringify(receipt)}`);
   console.debug("");
@@ -901,5 +868,3 @@ main().then(
     process.exit(1);
   }
 );
-
-// contract address: juno12pdkmn8qf09rn5yuf6lpreml8ypf45uzkvwyeztaqpjncpfwk0kqp3mrpr
