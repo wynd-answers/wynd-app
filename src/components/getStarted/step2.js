@@ -111,7 +111,7 @@ const StepTwo = ({ changeStep }) => {
       }
     };
 
-    const interval = setInterval(request, 5000);
+    const interval = setInterval(request, 500);
     const stopInterval = () => clearInterval(interval);
   };
 
