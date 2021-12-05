@@ -24,8 +24,8 @@ const contracts = {
     wyndId: 214,
     facuetId: 215,
     investId: 216,
-    wyndAddr: "",
-    faucetAddr: "",
+    wyndAddr: "juno13fyvtf5fnatl50qqr2fnk2st6s90avtasq5erk8yj6drj6ykzn0qcjm7ej",
+    faucetAddr: "juno1me0zwlldnr40373mpd6d3vf8edxx9gndedjw0l4x05lcg4h2ml8sjgyk6l",
     investAddr: "",
 }
 

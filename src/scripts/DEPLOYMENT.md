@@ -21,3 +21,15 @@ export MNEMONIC="admin-mnemonic-here"
 ```
 
 Update the CodeIds in `config.js:contracts` from output of this script
+
+```shell
+./init_wynd_token.js
+```
+
+Take the output address and enter in `config.js:contracts.wyndAddr`
+
+```shell
+./init_facuet.js
+```
+
+Take the output address and enter in `config.js:contracts.faucetAddr`
