@@ -112,7 +112,7 @@ const columns = [
  * Withdraw Modal Component
  * Shows a detailed list of investments and possible withdraws
  */
-const Withdraw = ({ open, close, investments }) => {
+const Withdraw = ({ open, close, investments, updateRows }) => {
   const [state, dispatch] = useContext(GlobalContext);
   const [loadingWithdraw, setLoadingWithdraw] = useState(false);
 
@@ -138,6 +138,7 @@ const Withdraw = ({ open, close, investments }) => {
         },
       });
     }
+    updateRows();
     setLoadingWithdraw(false);
     close();
   };

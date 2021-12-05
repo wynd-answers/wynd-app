@@ -26,7 +26,22 @@ const Tool = () => {
   // Ref for map component
   const mapRef = useRef();
 
-  useEffect(() => {
+  const updateBalance = async () => {
+    // Check if JUNO Balance already arrived from faucet
+    const balance = await state.signingClient.getBalance(
+      state.address,
+      chain.coinMinimalDenom
+    );
+
+    dispatch({
+      type: "SET_BALANCE_JUNO",
+      payload: { balance: balance.amount },
+    });
+
+    updateRows();
+  };
+
+  const updateRows = () => {
     // Get current investments, if wallet is connected
     if (state.signingClient) {
       getInvestments(state.address, chain.rpc)
@@ -56,6 +71,10 @@ const Tool = () => {
         })
         .catch((e) => console.log(e));
     }
+  };
+
+  useEffect(() => {
+    updateBalance();
 
     // Show details-box, when a hex is chosen
     if (state.chosenHex) {
@@ -63,7 +82,7 @@ const Tool = () => {
     } else {
       setShowInfo(false);
     }
-  }, [state.chosenHex, state.signingClient]);
+  }, [state.chosenHex, state.balance]);
 
   // Chose a hex from invested-table
   const clickInvested = (hex) => {
@@ -112,10 +131,16 @@ const Tool = () => {
             withdrawOpen={setWithdrawOpen}
             totalInvested={totalInvested}
             clickInvested={clickInvested}
+            updateRows={updateBalance}
           />
         </Grid>
       </Grid>
-      <Withdraw open={withdrawOpen} close={() => setWithdrawOpen(false)} investments={investments} />
+      <Withdraw
+        open={withdrawOpen}
+        close={() => setWithdrawOpen(false)}
+        investments={investments}
+        updateRows={updateBalance}
+      />
     </>
   );
 };

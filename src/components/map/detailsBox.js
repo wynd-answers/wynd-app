@@ -16,11 +16,12 @@ import {
 import { Send, Close } from "@mui/icons-material";
 import Chart from "./chart";
 import { investWynd } from "../../utils/client";
+import { chain } from "../../context/chain";
 
 /**
  * Chart in the detail-overlay for a single hex
  */
-const DetailsBox = ({ rows, containerRef }) => {
+const DetailsBox = ({ rows, containerRef, updateRows }) => {
   const [state, dispatch] = useContext(GlobalContext);
   const [amount, setAmount] = useState(null);
   const [loadingInvest, setLoadingInvest] = useState(false);
@@ -68,6 +69,7 @@ const DetailsBox = ({ rows, containerRef }) => {
           severity: "success",
         },
       });
+      updateRows();
     } catch (e) {
       dispatch({
         type: "SET_MESSAGE",
@@ -77,6 +79,7 @@ const DetailsBox = ({ rows, containerRef }) => {
         },
       });
     }
+
     setLoadingInvest(false);
   };
 
