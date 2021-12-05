@@ -21,11 +21,18 @@ const config = {
 };
 
 const contracts = {
-    wyndId: 0,
-    facuetId: 0,
-    investId: 0,
-    investAddr: "juno12pdkmn8qf09rn5yuf6lpreml8ypf45uzkvwyeztaqpjncpfwk0kqp3mrpr",
-    wyndAddress: "juno1wjur4gvzn0ccnffyuhvs3qxgsxn6ga86wpd2y8s2ufck4c2zmrfsyn44rq",
+    wyndId: 214,
+    facuetId: 215,
+    investId: 216,
+    wyndAddr: "",
+    faucetAddr: "",
+    investAddr: "",
+}
+
+const accounts = {
+    admin: "juno1v2gdcsw27ncrrch3e78c5tfym4su8zlwv2r9rd",
+    oracle: "juno14zw7q2rhk76uzvpj3a9yw88zjp0qgaa79zf9dv",
+    investor: "juno1l3493que6nqetkf73qc2mfknd5jn5mlc7qw8wv",
 }
 
 // this creates a new signing client from the config.
@@ -52,4 +59,4 @@ async function createClient() {
     return client;
 }
 
-module.exports = { config, contracts, createSigningClient, createClient };
+module.exports = { accounts, config, contracts, createSigningClient, createClient };
