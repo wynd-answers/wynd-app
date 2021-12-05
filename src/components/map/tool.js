@@ -27,17 +27,18 @@ const Tool = () => {
   const mapRef = useRef();
 
   const updateBalance = async () => {
-    // Check if JUNO Balance already arrived from faucet
-    const balance = await state.signingClient.getBalance(
-      state.address,
-      chain.coinMinimalDenom
-    );
+    if (state.signingClient) {
+      // Check if JUNO Balance already arrived from faucet
+      const balance = await state.signingClient.getBalance(
+        state.address,
+        chain.coinMinimalDenom
+      );
 
-    dispatch({
-      type: "SET_BALANCE_JUNO",
-      payload: { balance: balance.amount },
-    });
-
+      dispatch({
+        type: "SET_BALANCE_JUNO",
+        payload: { balance: balance.amount },
+      });
+    }
     updateRows();
   };
 
