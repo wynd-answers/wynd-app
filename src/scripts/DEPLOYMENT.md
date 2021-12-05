@@ -11,11 +11,12 @@ and describes the setup of the contracts only.
 3. Send > 1000 JUNOX to admin and oracle. 10 JUNOX to investor
 4. You can rebuild contracts from source and copy them in the `contracts` dir if not already done
 
-## Set up Token and Faucet
+## Set up Contracts
 
 Upload the 3 required contracts.
 
 ```shell
+source ./secrets/admin
 export MNEMONIC="admin-mnemonic-here"
 ./upload_contracts.js
 ```
@@ -33,3 +34,18 @@ Take the output address and enter in `config.js:contracts.wyndAddr`
 ```
 
 Take the output address and enter in `config.js:contracts.faucetAddr`
+
+```shell
+./init_wynd_invest.js
+```
+
+Take the output address and enter in `config.js:contracts.investAddr`
+
+## Load oracle data
+
+
+```shell
+source ./secrets/oracle
+export MNEMONIC="oracle-mnemonic-here"
+./submit_oracle.js
+```

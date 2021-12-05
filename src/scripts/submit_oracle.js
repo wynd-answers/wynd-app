@@ -3,23 +3,9 @@
 
 /* eslint-disable @typescript-eslint/naming-convention */
 const axios = require("axios");
-const { SigningCosmWasmClient } = require('@cosmjs/cosmwasm-stargate');
-const { DirectSecp256k1HdWallet } = require('@cosmjs/proto-signing');
-const { ConstructionOutlined } = require("@mui/icons-material");
+const { accounts, contracts, createSigningClient} = require("./config");
 
-// from ../context/chain.js
-const config = {
-  endpoint: 'https://rpc.uni.junomint.com:443/',
-  bech32prefix: 'juno',
-  feeDenom: 'ujunox',
-  // this one controls the oracle
-  mnemonic:
-    'wagon romance envelope exile movie pencil happy one keep large glove floor',
-};
-
-const investAddr = "juno12pdkmn8qf09rn5yuf6lpreml8ypf45uzkvwyeztaqpjncpfwk0kqp3mrpr";
 const apiUrl = "https://api.wyndex.io/api/fetch_latest";
-
 
 async function loadOracleData(since) {
     const { data }  = await axios.get(apiUrl);
@@ -58,41 +44,17 @@ function eventObject(event) {
 }
 
 async function main() {
-    // use the faucet account to upload (it has fee tokens)
-    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(config.mnemonic, {
-      prefix: config.bech32prefix,
-    });
-    const { address } = (await wallet.getAccounts())[0];
-    console.log(address);
+    const {client, address} = await createSigningClient();
+    let balance = await client.getBalance(address, "ujunox");
+    console.info(`Balance: ${balance.amount} ${balance.denom}`);
   
-    const options = {
-      prefix: config.bech32prefix,
-    };
-    const client = await SigningCosmWasmClient.connectWithSigner(
-      config.endpoint,
-      wallet,
-      options
-    );
-    // let balance = await client.getBalance(address, "ujunox");
-    // console.info(`Balance: ${balance.amount} ${balance.denom}`);
-  
-    // Data in the last 7 days
-    const since = Math.floor(Date.now() / 1000) - 7 * 86400;
+    // Data in the last 5 days
+    const since = Math.floor(Date.now() / 1000) - 5 * 86400;
     const values = await loadOracleData(since);
     const msg = { store_oracle: { values }};
-
-    const fee = {
-      // those are many indexes to add!
-      gas: "3200000",
-      amount: [{
-        denom: config.feeDenom,
-        // 0.025 * gas
-        amount: "80000",
-      }]
-    };
     
     console.log("Executing...");
-    const { logs } = await client.execute(address, investAddr, msg, fee, "New oracle data");
+    const { logs } = await client.execute(address, contracts.investAddr, msg, "auto", "New oracle data");
 
     console.debug(`Execute succeeded. Receipt: `);
     const events = logToEvents(logs);
