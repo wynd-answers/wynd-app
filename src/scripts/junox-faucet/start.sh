@@ -32,4 +32,4 @@ docker run --read-only --rm \
   --name "$CONTAINER_NAME" \
   -p 8000:8000 \
   "$REPOSITORY:$VERSION" \
-  start "https://rpc.uni.junomint.com:443/"
+  start "https://rpc.uni.wyndex.io:443/"

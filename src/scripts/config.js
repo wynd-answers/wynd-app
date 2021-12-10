@@ -14,7 +14,7 @@ function getMnemonic() {
 //     'wild enact trust mean try snack evoke bring gown core curtain ahead',
 
 const config = {
-    endpoint: 'https://rpc.uni.junomint.com:443/',
+    endpoint: 'https://rpc.uni.wyndex.io:443/',
     prefix: 'juno',
     feeDenom: 'ujunox',
     gasPrice: GasPrice.fromString('0.025ujunox'),

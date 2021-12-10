@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 const { CosmWasmClient } = require('@cosmjs/cosmwasm-stargate');
 
-const endpoint = 'https://rpc.uni.junomint.com:443/';
+const endpoint = 'https://rpc.uni.wyndex.io:443/';
   
 const investAddr = "juno12pdkmn8qf09rn5yuf6lpreml8ypf45uzkvwyeztaqpjncpfwk0kqp3mrpr";
 const defaultIndex = "832689fffffffff"
