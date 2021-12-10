@@ -116,7 +116,7 @@ const Withdraw = ({ open, close, investments, updateRows }) => {
   const [state, dispatch] = useContext(GlobalContext);
   const [loadingWithdraw, setLoadingWithdraw] = useState(false);
 
-  const invArr = investments.map((obj, i) => ({ ...obj, id: "false" }));
+  const invArr = investments.map((obj, i) => ({ ...obj, id: `investment-${i}` }));
   const handleWithdraw = async () => {
     // Withdraw
     setLoadingWithdraw(true);
