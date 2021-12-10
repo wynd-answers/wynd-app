@@ -11,7 +11,7 @@ const { DirectSecp256k1HdWallet } = require('@cosmjs/proto-signing');
 
 // from ../context/chain.js
 const config = {
-  endpoint: 'https://rpc.uni.junomint.com:443/',
+  endpoint: 'https://rpc.uni.wyndex.io:443/',
   bech32prefix: 'juno',
   feeDenom: 'ujunox',
   mnemonic:
