@@ -21,12 +21,12 @@ const config = {
 };
 
 const contracts = {
-    wyndId: 214,
-    facuetId: 215,
-    investId: 216,
-    wyndAddr: "juno13fyvtf5fnatl50qqr2fnk2st6s90avtasq5erk8yj6drj6ykzn0qcjm7ej",
-    faucetAddr: "juno1me0zwlldnr40373mpd6d3vf8edxx9gndedjw0l4x05lcg4h2ml8sjgyk6l",
-    investAddr: "juno1qykpkn9j755y4pzhvw5slu7cn9ung42hk3vj55r0gfdj5u8up5pqgca7u2",
+    wyndId: 37,
+    facuetId: 38,
+    investId: 39,
+    wyndAddr: "juno10vdgcaujh4r2ylvvauvuufgu9xggl6dh9z6qfcq640854my77fpskmu4mn",
+    faucetAddr: "juno1kmya9p26a9ecq07sxdgkkfmr8pcqyszv7gmkyqz6hlt006qr75lq2a8mw9",
+    investAddr: "juno1z2cp6qnufdjvc8n24p59dumwpngkgxal4usz2w2futsqrglgsskqcnjh4p",
 }
 
 const accounts = {
