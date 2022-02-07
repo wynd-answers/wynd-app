@@ -48,11 +48,8 @@
     "styled-components": "^5.3.3"
   },
   "browserslist": [
-    ">0.2%",
-    "not ie 11",
-    "not chrome < 51",
-    "not safari < 10",
-    "not dead"
+    "defaults",
+    "not ie 11"
   ],
   "devDependencies": {
     "@babel/preset-env": "^7.16.4"
