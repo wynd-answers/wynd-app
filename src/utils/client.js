@@ -1,8 +1,13 @@
-import { calculateFee, GasPrice } from "@cosmjs/stargate";
-import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-import { FaucetClient } from "@cosmjs/faucet-client";
-import { toBase64, toAscii } from "@cosmjs/encoding";
+import {
+  calculateFee,
+  GasPrice,
+  CosmWasmClient,
+  FaucetClient,
+  toBase64,
+  toAscii,
+} from "cosmwasm";
 import { chain } from "../context/chain";
+
 /**
  * Faucet
  */

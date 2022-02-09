@@ -2,19 +2,19 @@
 /*jshint esversion: 8 */
 
 /* eslint-disable @typescript-eslint/naming-convention */
-const { SigningCosmWasmClient } = require('@cosmjs/cosmwasm-stargate');
-const { DirectSecp256k1HdWallet } = require('@cosmjs/proto-signing');
+const { SigningCosmWasmClient, DirectSecp256k1HdWallet } = require("cosmwasm");
 
 // from ../context/chain.js
 const config = {
-  endpoint: 'https://rpc.uni.wyndex.io:443/',
-  bech32prefix: 'juno',
-  feeDenom: 'ujunox',
+  endpoint: "https://rpc.uni.wyndex.io:443/",
+  bech32prefix: "juno",
+  feeDenom: "ujunox",
   mnemonic:
-    'wild enact trust mean try snack evoke bring gown core curtain ahead',
+    "wild enact trust mean try snack evoke bring gown core curtain ahead",
 };
 
-const contractAddr = "juno12pdkmn8qf09rn5yuf6lpreml8ypf45uzkvwyeztaqpjncpfwk0kqp3mrpr";
+const contractAddr =
+  "juno12pdkmn8qf09rn5yuf6lpreml8ypf45uzkvwyeztaqpjncpfwk0kqp3mrpr";
 const newCodeId = 208;
 
 async function main() {
@@ -36,23 +36,31 @@ async function main() {
 
   const fee = {
     gas: "300000",
-    amount: [{
-      denom: config.feeDenom,
-      // 0.025 * gas
-      amount: "7500",
-    }]
+    amount: [
+      {
+        denom: config.feeDenom,
+        // 0.025 * gas
+        amount: "7500",
+      },
+    ],
   };
 
   console.log(`Migrating contract ${contractAddr} to code ID ${newCodeId}`);
 
-  const receipt = await client.migrate(address, contractAddr, newCodeId, {}, fee);
+  const receipt = await client.migrate(
+    address,
+    contractAddr,
+    newCodeId,
+    {},
+    fee
+  );
 
   console.debug(`Migrate succeeded. Receipt: ${JSON.stringify(receipt)}`);
 }
 
 main().then(
   () => {
-    console.info('All done, let the coins flow.');
+    console.info("All done, let the coins flow.");
     process.exit(0);
   },
   (error) => {
