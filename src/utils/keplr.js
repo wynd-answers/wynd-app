@@ -1,4 +1,4 @@
-import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+import { SigningCosmWasmClient } from "cosmwasm";
 
 export const checkExtensionAndBrowser = () => {
   if (typeof window !== `undefined`) {

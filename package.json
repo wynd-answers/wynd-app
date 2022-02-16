@@ -15,10 +15,7 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
-    "@cosmjs/cosmwasm-stargate": "^0.27.0-rc1",
-    "@cosmjs/faucet-client": "^0.27.0-rc1",
-    "@cosmjs/proto-signing": "^0.27.0-rc1",
-    "@cosmjs/stargate": "^0.27.0-rc1",
+    "cosmwasm": "^0.27.1-1",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.0.1",
